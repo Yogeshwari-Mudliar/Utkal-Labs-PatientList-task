@@ -1,0 +1,6 @@
+/* Optional: fixed shadow header with glass effect */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}

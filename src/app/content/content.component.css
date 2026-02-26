@@ -1,0 +1,13 @@
+/* custom styles for the PrimeNG table paginator */
+:host ::ng-deep .custom-table .p-paginator {
+  @apply bg-white p-2 rounded-b-xl shadow-inner flex items-center justify-between;
+}
+
+:host ::ng-deep .custom-table .p-paginator .p-paginator-current,
+:host ::ng-deep .custom-table .p-paginator .p-paginator-icon {
+  @apply text-gray-700;
+}
+
+:host ::ng-deep .custom-table .p-paginator .p-paginator-page {
+  @apply px-2 py-1 rounded hover:bg-indigo-100;
+}

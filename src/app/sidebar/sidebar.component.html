@@ -1,0 +1,52 @@
+<nav class="flex flex-col bg-indigo-800 text-white w-64 min-h-screen">
+  <!-- Brand / Logo -->
+  <div class="px-6 py-4 flex items-center gap-3">
+    <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-indigo-800 font-bold">
+      D
+    </div>
+    <span class="text-xl font-semibold">DIGILAB</span>
+  </div>
+
+  <!-- Navigation items -->
+  <ul class="flex-1 px-2">
+    <li class="my-1 rounded-md hover:bg-indigo-700">
+      <a routerLink="/" class="flex items-center gap-3 px-4 py-2">
+        <i class="pi pi-home"></i>
+        <span>Home</span>
+      </a>
+    </li>
+    <li class="my-1 rounded-md hover:bg-indigo-700">
+      <a routerLink="/dashboard" class="flex items-center gap-3 px-4 py-2">
+        <i class="pi pi-chart-line"></i>
+        <span>Dashboard</span>
+      </a>
+    </li>
+    <li class="my-1 rounded-md hover:bg-indigo-700">
+      <a routerLink="/patients" class="flex items-center gap-3 px-4 py-2">
+        <i class="pi pi-users"></i>
+        <span>Patients</span>
+      </a>
+    </li>
+    <li class="my-1 rounded-md hover:bg-indigo-700">
+      <a routerLink="/orders" class="flex items-center gap-3 px-4 py-2">
+        <i class="pi pi-shopping-cart"></i>
+        <span>Orders</span>
+      </a>
+    </li>
+    <li class="my-1 rounded-md hover:bg-indigo-700">
+      <a routerLink="/settings" class="flex items-center gap-3 px-4 py-2">
+        <i class="pi pi-cog"></i>
+        <span>Settings</span>
+      </a>
+    </li>
+  </ul>
+
+  <!-- Footer / User info -->
+  <div class="px-6 py-4 border-t border-indigo-700 flex items-center gap-3">
+    <img src="https://via.placeholder.com/32" alt="avatar" class="w-8 h-8 rounded-full" />
+    <div class="text-sm">
+      <div>Kete Rodgers</div>
+      <div class="text-xs text-indigo-300">admin&#64;example.com</div>
+    </div>
+  </div>
+</nav>
