@@ -155,26 +155,16 @@ name: this.getRandomName(),
     this.totalRecords = this.allPatients.length;
 
     // Initial page load
-    this.userData = this.allPatients.slice(0, 5);
+this.userData = this.allPatients;   // give full dataset
   }
 }
 loadLazy(event: any): void {
 
-  const { first, rows } = event;
+  console.log("Lazy triggered", event);
 
-  this.currentFirst = first;
+  this.currentFirst = event.first;
+  this.pageSize = event.rows;
 
-  let filteredData = [...this.allPatients];
-
-  this.totalRecords = filteredData.length;
-
-  const chunk = filteredData.slice(first, first + rows);
-
-  if (first === 0) {
-    this.userData = chunk;
-  } else {
-    this.userData = [...this.userData, ...chunk];
-  }
 }
   onAddUser(): void {
     this.showAddPatient = true;
@@ -250,12 +240,9 @@ externalPageChange(event: any) {
   this.pageSize = event.rows;
   this.currentFirst = event.first;
 
-  this.dt.first = this.currentFirst;
+  this.dt.first = this.currentFirst;   // tell table to move
 
-  this.loadLazy({
-    first: this.currentFirst,
-    rows: this.pageSize
-  });
+  this.loadLazy(event);
 }
 resetFilters() {
   this.search = '';

@@ -103,11 +103,22 @@
 
     <!-- TABLE SECTION -->
     <div class="flex-1 min-h-0">
-      <p-table #dt [value]="userData" [lazy]="true" (onLazyLoad)="loadLazy($event)" [totalRecords]="totalRecords"
-        [rows]="pageSize" [rowsPerPageOptions]="[5,10,20]" [stripedRows]="true" [showCurrentPageReport]="true"
-        [virtualScroll]="true" [virtualScrollItemSize]="48" responsiveLayout="scroll" [scrollable]="true"
-        [scrollHeight]="scrollHeight" styleClass="p-datatable-sm p-datatable-gridlines shadow-sm rounded-xl">
+<p-table
+  #dt
+  [value]="userData"
 
+  [lazy]="true"
+  (onLazyLoad)="loadLazy($event)"
+  [totalRecords]="totalRecords"
+
+  [virtualScroll]="true"
+  [virtualScrollItemSize]="60"
+
+  [scrollable]="true"
+  scrollHeight="400px"
+
+  [rows]="pageSize"
+>
         <!-- HEADER -->
         <ng-template pTemplate="header">
           <tr class="bg-indigo-50">
