@@ -1,0 +1,102 @@
+
+<p-dialog header="Clinical Record" [(visible)]="visible" [modal]="true" [style]="{ width: '650px' }" [draggable]="false"
+  [resizable]="false" (onHide)="close()">
+
+  <div class="p-fluid grid">
+
+    <!-- Appointment -->
+    <div class="col-12 mb-3">
+      <label class="font-semibold mb-2 block">Select Appointment</label>
+
+      <p-dropdown [options]="appointments" optionLabel="appointmentDate" optionValue="id"
+        [(ngModel)]="selectedAppointmentId" placeholder="Choose Appointment" styleClass="w-full">
+      </p-dropdown>
+    </div>
+
+    <!-- Prescription -->
+    <div class="col-12 mb-3">
+      <label class="font-semibold mb-2 block">Prescription</label>
+
+      <textarea pInputTextarea rows="3" [(ngModel)]="prescription" class="w-full" placeholder="Enter prescription">
+      </textarea>
+    </div>
+
+    <!-- Upload Reports -->
+    <div class="col-12 mb-3">
+      <label class="font-semibold mb-2 block">Upload Reports</label>
+
+      <p-fileUpload mode="basic" chooseLabel="Upload File" customUpload="true" chooseIcon="pi pi-upload"
+        chooseButtonStyleClass="flex items-start gap-1.5 px-3 h-[34px] text-sm
+  bg-blue-700 text-white rounded-md
+  hover:bg-blue-600 shadow-sm
+  transition whitespace-nowrap" (onSelect)="onFileSelect($event)">
+      </p-fileUpload>
+    </div>
+
+    <!-- Uploaded Files -->
+    <div class="col-12 mb-3" *ngIf="attachments.length > 0">
+
+      <p-table [value]="attachments" responsiveLayout="scroll" [tableStyle]="{'min-width':'100%'}">
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th>File Name</th>
+            <th>Type</th>
+            <th>Size</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-file>
+          <tr>
+            <td>{{ file.name }}</td>
+            <td>{{ file.type }}</td>
+            <td>{{ file.size }} bytes</td>
+          </tr>
+        </ng-template>
+
+      </p-table>
+
+    </div>
+
+    <!-- Doctor Note -->
+    <div class="col-12 mb-3">
+      <label class="font-semibold mb-2 block">Doctor Note</label>
+
+      <textarea pInputTextarea rows="3" [(ngModel)]="note" class="w-full" placeholder="Add doctor notes">
+      </textarea>
+    </div>
+
+  </div>
+
+  <!-- Footer Buttons -->
+  <ng-template pTemplate="footer">
+
+    <div class="flex justify-end gap-2">
+
+      <!-- Cancel -->
+      <button type="button" (click)="close()" class="flex items-center gap-1.5 px-3 h-[34px] text-sm
+               text-gray-600 rounded-md
+               hover:bg-gray-100
+               transition whitespace-nowrap">
+
+        <i class="pi pi-times text-xs"></i>
+        Cancel
+
+      </button>
+
+      <!-- Submit -->
+      <button type="button" (click)="save()" class="flex items-center gap-1.5 px-3 h-[34px] text-sm
+               bg-blue-700 text-white rounded-md
+               hover:bg-blue-600 shadow-sm
+               transition whitespace-nowrap">
+
+        <i class="pi pi-check text-xs"></i>
+        Submit
+
+      </button>
+
+    </div>
+
+  </ng-template>
+
+</p-dialog>

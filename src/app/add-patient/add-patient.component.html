@@ -1,10 +1,6 @@
 <div class="bg-white rounded-2xl p-8">
 
-  <form
-    [formGroup]="patientForm"
-    (ngSubmit)="submit()"
-    class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6"
-  >
+  <form [formGroup]="patientForm" (ngSubmit)="submit()" class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
 
     <!-- Patient Name -->
     <div class="flex flex-col gap-2">
@@ -12,23 +8,15 @@
         Patient Name *
       </label>
 
-      <input
-        pInputText
-        formControlName="name"
-        [ngClass]="{
+      <input pInputText formControlName="name" [ngClass]="{
           'border-red-500 ring-1 ring-red-300':
           patientForm.get('name')?.invalid &&
           patientForm.get('name')?.touched
-        }"
-        class="w-full border border-gray-500 rounded-lg px-3 py-2
-               focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition"
-      />
+        }" class="w-full border border-gray-500 rounded-lg px-3 py-2
+               focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition" />
 
-      <small
-        *ngIf="patientForm.get('name')?.invalid &&
-               patientForm.get('name')?.touched"
-        class="text-red-500 text-xs"
-      >
+      <small *ngIf="patientForm.get('name')?.invalid &&
+               patientForm.get('name')?.touched" class="text-red-500 text-xs">
         Patient name is required
       </small>
     </div>
@@ -39,23 +27,15 @@
         Contact Number *
       </label>
 
-      <input
-        pInputText
-        formControlName="contactNumber"
-        [ngClass]="{
+      <input pInputText formControlName="contactNumber" [ngClass]="{
           'border-red-500 ring-1 ring-red-300':
           patientForm.get('contactNumber')?.invalid &&
           patientForm.get('contactNumber')?.touched
-        }"
-        class="w-full border border-gray-300 rounded-lg px-3 py-2
-               focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition"
-      />
+        }" class="w-full border border-gray-300 rounded-lg px-3 py-2
+               focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition" />
 
-      <small
-        *ngIf="patientForm.get('contactNumber')?.invalid &&
-               patientForm.get('contactNumber')?.touched"
-        class="text-red-500 text-xs"
-      >
+      <small *ngIf="patientForm.get('contactNumber')?.invalid &&
+               patientForm.get('contactNumber')?.touched" class="text-red-500 text-xs">
         Contact number is required
       </small>
     </div>
@@ -66,31 +46,20 @@
         Email *
       </label>
 
-      <input
-        pInputText
-        formControlName="email"
-        [ngClass]="{
+      <input pInputText formControlName="email" [ngClass]="{
           'border-red-500 ring-1 ring-red-300':
           patientForm.get('email')?.invalid &&
           patientForm.get('email')?.touched
-        }"
-        class="w-full border border-gray-300 rounded-lg px-3 py-2
-               focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition"
-      />
+        }" class="w-full border border-gray-300 rounded-lg px-3 py-2
+               focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition" />
 
-      <small
-        *ngIf="patientForm.get('email')?.errors?.['required'] &&
-               patientForm.get('email')?.touched"
-        class="text-red-500 text-xs"
-      >
+      <small *ngIf="patientForm.get('email')?.errors?.['required'] &&
+               patientForm.get('email')?.touched" class="text-red-500 text-xs">
         Email is required
       </small>
 
-      <small
-        *ngIf="patientForm.get('email')?.errors?.['email'] &&
-               patientForm.get('email')?.touched"
-        class="text-red-500 text-xs"
-      >
+      <small *ngIf="patientForm.get('email')?.errors?.['email'] &&
+               patientForm.get('email')?.touched" class="text-red-500 text-xs">
         Invalid email format
       </small>
     </div>
@@ -101,23 +70,15 @@
         Emergency Contact *
       </label>
 
-      <input
-        pInputText
-        formControlName="emergencyContact"
-        [ngClass]="{
+      <input pInputText formControlName="emergencyContact" [ngClass]="{
           'border-red-500 ring-1 ring-red-300':
           patientForm.get('emergencyContact')?.invalid &&
           patientForm.get('emergencyContact')?.touched
-        }"
-        class="w-full border border-gray-300 rounded-lg px-3 py-2
-               focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition"
-      />
+        }" class="w-full border border-gray-300 rounded-lg px-3 py-2
+               focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition" />
 
-      <small
-        *ngIf="patientForm.get('emergencyContact')?.invalid &&
-               patientForm.get('emergencyContact')?.touched"
-        class="text-red-500 text-xs"
-      >
+      <small *ngIf="patientForm.get('emergencyContact')?.invalid &&
+               patientForm.get('emergencyContact')?.touched" class="text-red-500 text-xs">
         Emergency contact is required
       </small>
     </div>
@@ -128,23 +89,14 @@
         Doctor *
       </label>
 
-      <p-dropdown
-        [options]="doctors"
-        formControlName="doctorName"
-        placeholder="Select Doctor"
-        [ngClass]="{
+      <p-dropdown [options]="doctors" formControlName="doctorName" placeholder="Select Doctor" [ngClass]="{
           'border-red-500':
           patientForm.get('doctorName')?.invalid &&
           patientForm.get('doctorName')?.touched
-        }"
-        styleClass="w-full border border-gray-300 rounded-lg"
-      ></p-dropdown>
+        }" styleClass="w-full border border-gray-300 rounded-lg"></p-dropdown>
 
-      <small
-        *ngIf="patientForm.get('doctorName')?.invalid &&
-               patientForm.get('doctorName')?.touched"
-        class="text-red-500 text-xs"
-      >
+      <small *ngIf="patientForm.get('doctorName')?.invalid &&
+               patientForm.get('doctorName')?.touched" class="text-red-500 text-xs">
         Doctor selection is required
       </small>
     </div>
@@ -155,23 +107,15 @@
         Illness *
       </label>
 
-      <input
-        pInputText
-        formControlName="illness"
-        [ngClass]="{
+      <input pInputText formControlName="illness" [ngClass]="{
           'border-red-500 ring-1 ring-red-300':
           patientForm.get('illness')?.invalid &&
           patientForm.get('illness')?.touched
-        }"
-        class="w-full border border-gray-300 rounded-lg px-3 py-2
-               focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition"
-      />
+        }" class="w-full border border-gray-300 rounded-lg px-3 py-2
+               focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition" />
 
-      <small
-        *ngIf="patientForm.get('illness')?.invalid &&
-               patientForm.get('illness')?.touched"
-        class="text-red-500 text-xs"
-      >
+      <small *ngIf="patientForm.get('illness')?.invalid &&
+               patientForm.get('illness')?.touched" class="text-red-500 text-xs">
         Illness is required
       </small>
     </div>
@@ -182,23 +126,15 @@
         Last Visit Date *
       </label>
 
-      <input
-        type="date"
-        formControlName="lastVisitDate"
-        [ngClass]="{
+      <input type="date" formControlName="lastVisitDate" [ngClass]="{
           'border-red-500 ring-1 ring-red-300':
           patientForm.get('lastVisitDate')?.invalid &&
           patientForm.get('lastVisitDate')?.touched
-        }"
-        class="w-full border border-gray-300 rounded-lg px-3 py-2
-               focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition"
-      />
+        }" class="w-full border border-gray-300 rounded-lg px-3 py-2
+               focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition" />
 
-      <small
-        *ngIf="patientForm.get('lastVisitDate')?.invalid &&
-               patientForm.get('lastVisitDate')?.touched"
-        class="text-red-500 text-xs"
-      >
+      <small *ngIf="patientForm.get('lastVisitDate')?.invalid &&
+               patientForm.get('lastVisitDate')?.touched" class="text-red-500 text-xs">
         Last visit date is required
       </small>
     </div>
@@ -209,23 +145,15 @@
         Registration Date *
       </label>
 
-      <input
-        type="date"
-        formControlName="registrationDate"
-        [ngClass]="{
+      <input type="date" formControlName="registrationDate" [ngClass]="{
           'border-red-500 ring-1 ring-red-300':
           patientForm.get('registrationDate')?.invalid &&
           patientForm.get('registrationDate')?.touched
-        }"
-        class="w-full border border-gray-300 rounded-lg px-3 py-2
-               focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition"
-      />
+        }" class="w-full border border-gray-300 rounded-lg px-3 py-2
+               focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition" />
 
-      <small
-        *ngIf="patientForm.get('registrationDate')?.invalid &&
-               patientForm.get('registrationDate')?.touched"
-        class="text-red-500 text-xs"
-      >
+      <small *ngIf="patientForm.get('registrationDate')?.invalid &&
+               patientForm.get('registrationDate')?.touched" class="text-red-500 text-xs">
         Registration date is required
       </small>
     </div>
@@ -236,23 +164,15 @@
         Next Follow-up Date *
       </label>
 
-      <input
-        type="date"
-        formControlName="nextFollowupDate"
-        [ngClass]="{
+      <input type="date" formControlName="nextFollowupDate" [ngClass]="{
           'border-red-500 ring-1 ring-red-300':
           patientForm.get('nextFollowupDate')?.invalid &&
           patientForm.get('nextFollowupDate')?.touched
-        }"
-        class="w-full border border-gray-300 rounded-lg px-3 py-2
-               focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition"
-      />
+        }" class="w-full border border-gray-300 rounded-lg px-3 py-2
+               focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition" />
 
-      <small
-        *ngIf="patientForm.get('nextFollowupDate')?.invalid &&
-               patientForm.get('nextFollowupDate')?.touched"
-        class="text-red-500 text-xs"
-      >
+      <small *ngIf="patientForm.get('nextFollowupDate')?.invalid &&
+               patientForm.get('nextFollowupDate')?.touched" class="text-red-500 text-xs">
         Next follow-up date is required
       </small>
     </div>
@@ -263,34 +183,20 @@
         Description
       </label>
 
-      <textarea
-        formControlName="description"
-        rows="3"
-        class="w-full border border-gray-300 rounded-lg px-3 py-2
+      <textarea formControlName="description" rows="3" class="w-full border border-gray-300 rounded-lg px-3 py-2
                focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100
-               transition resize-none"
-      ></textarea>
+               transition resize-none"></textarea>
     </div>
 
     <!-- Buttons -->
     <div class="md:col-span-2 flex justify-end gap-4 pt-6 border-t mt-4">
 
-      <button
-        type="button"
-        (click)="cancel()"
-        class="px-6 py-2 rounded-lg border border-gray-300
-               text-gray-700 hover:bg-gray-100 transition"
-      >
+      <button type="button" (click)="cancel()" class="px-6 py-2 rounded-lg border border-gray-300
+               text-gray-700 hover:bg-gray-100 transition">
         Cancel
       </button>
 
-      <button
-        pButton
-        type="submit"
-        label="Add Patient"
-        icon="pi pi-check"
-        class="p-button-primary px-6"
-      ></button>
+      <button pButton type="submit" [label]="isEditMode ? 'Update Patient' : 'Add Patient'" icon="pi pi-check"  class="p-button-primary px-6"></button>
 
     </div>
 

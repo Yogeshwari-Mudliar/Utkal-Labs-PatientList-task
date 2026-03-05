@@ -1,0 +1,43 @@
+<div class="p-4">
+
+  <h3 class="text-lg font-semibold mb-4">
+    Clinical Records for {{ patient?.name }}
+  </h3>
+
+  <p-tabView>
+
+    <!-- PRESCRIPTIONS -->
+    <p-tabPanel header="Prescriptions">
+      <div class="mb-3">
+        <button 
+          pButton 
+          label="Add Prescription" 
+          icon="pi pi-plus"
+          (click)="openPrescription()">
+        </button>
+      </div>
+
+      <div class="text-sm text-gray-600">
+        No prescriptions available.
+      </div>
+    </p-tabPanel>
+
+    <!-- NOTES -->
+    <p-tabPanel header="Notes">
+      <div class="mb-3">
+        <button 
+          pButton 
+          label="Add Note" 
+          icon="pi pi-plus"
+          (click)="openNote()">
+        </button>
+      </div>
+
+      <div class="text-sm text-gray-600">
+        No clinical notes added.
+      </div>
+    </p-tabPanel>
+
+  </p-tabView>
+
+</div>

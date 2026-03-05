@@ -1,0 +1,140 @@
+<div class="p-4">
+
+  <h2 class="text-xl font-semibold mb-4">
+    Patient: {{ patient?.name }}
+  </h2>
+
+  <p-tabView>
+
+    <!-- DETAILS TAB -->
+    <p-tabPanel header="Details">
+      <div class="grid grid-cols-2 gap-4">
+        <div><strong>ID:</strong> {{ patient?.id }}</div>
+        <div><strong>Email:</strong> {{ patient?.email }}</div>
+        <div><strong>Contact:</strong> {{ patient?.contactNumber }}</div>
+        <div><strong>Doctor:</strong> {{ patient?.doctorName }}</div>
+        <div><strong>Illness:</strong> {{ patient?.illness }}</div>
+        <div><strong>Last Visit:</strong> {{ patient?.lastVisitDate }}</div>
+      </div>
+    </p-tabPanel>
+
+ <p-tabPanel header="Appointments">
+
+  <!-- Header Section -->
+  <div class="flex justify-between items-center mb-3">
+    <div>
+      <p><strong>Last Visit:</strong> {{ patient?.lastVisitDate }}</p>
+      <p><strong>Next Follow-up:</strong> {{ patient?.nextFollowupDate }}</p>
+    </div>
+
+    <button
+      pButton
+      icon="pi pi-plus"
+      class="p-button-sm"
+      label="New Appointment"
+      (click)="appointmentDialogVisible = true">
+    </button>
+  </div>
+
+  <!-- Appointment History Table -->
+  <p-table [value]="appointments" *ngIf="appointments.length > 0">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Type</th>
+        <th>Status</th>
+        <th>Reason</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-appt>
+      <tr>
+        <td>{{ appt.appointmentDate }}</td>
+        <td>{{ appt.appointmentTime }}</td>
+        <td>{{ appt.type }}</td>
+        <td>
+          <span
+            [ngClass]="{
+              'text-green-600': appt.status === 'Completed',
+              'text-blue-600': appt.status === 'Scheduled',
+              'text-red-600': appt.status === 'Cancelled',
+              'text-orange-600': appt.status === 'No-Show'
+            }">
+            {{ appt.status }}
+          </span>
+        </td>
+        <td>{{ appt.reason }}</td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+
+  <div *ngIf="appointments.length === 0" class="text-gray-500">
+    No appointment history available.
+  </div>
+
+</p-tabPanel>
+
+    <!-- PRESCRIPTION TAB -->
+<p-tabPanel header="Clinical">
+
+  <div class="mb-3">
+    <button
+      pButton
+      label="Add Clinical Record"
+      icon="pi pi-plus"
+      (click)="clinicalDialogVisible = true">
+    </button>
+  </div>
+
+  <div *ngIf="clinicalRecords.length === 0" class="text-gray-500">
+    No clinical records available.
+  </div>
+
+  <p-table [value]="clinicalRecords" *ngIf="clinicalRecords.length > 0">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Appointment Date</th>
+        <th>Prescription</th>
+        <th>Note</th>
+        <th>Attachments</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-rec>
+      <tr>
+        <td>{{ rec.appointmentDate }}</td>
+        <td>{{ rec.prescription }}</td>
+        <td>{{ rec.note }}</td>
+        <td>{{ rec.attachments?.length || 0 }}</td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+
+</p-tabPanel>
+
+    <!-- BILLING TAB -->
+    <p-tabPanel header="Billing">
+      <div>
+        <p>Billing history will appear here.</p>
+      </div>
+    </p-tabPanel>
+
+  </p-tabView>
+
+</div>
+
+<app-appointment-dialog
+  [(visible)]="appointmentDialogVisible"
+  [patient]="patient"
+  (visibleChange)="loadAppointments()">
+</app-appointment-dialog>
+<app-clinical-record-dialog
+  [(visible)]="clinicalDialogVisible"
+  [patient]="patient"
+  (visibleChange)="loadClinicalRecords()">
+</app-clinical-record-dialog>

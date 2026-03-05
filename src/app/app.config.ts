@@ -10,7 +10,10 @@ import Lara from '@primeng/themes/lara';
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideHttpClient(),provideAnimations(),providePrimeNG({
       theme: {
-        preset: Lara
+        preset: Lara,
+        options: {
+          primaryColor: 'blue'
+        }
       }
     })]
 };

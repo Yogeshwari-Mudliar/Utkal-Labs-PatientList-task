@@ -15,149 +15,133 @@
           PATIENT LIST
         </h2>
 
-       <!-- Right Controls -->
-<div class="flex flex-wrap items-center gap-3">
+        <!-- Right Controls -->
+        <div class="flex flex-wrap items-center gap-3">
 
-  <!-- Search -->
-  <div class="relative w-56">
-    <i class="pi pi-search absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+          <!-- Search -->
+      <div class="relative w-56">
+  <i class="pi pi-search absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
 
-    <input
-      pInputText
-      type="text"
-      [(ngModel)]="search"
-      (input)="applyFilters()"
-      placeholder="     Search..."
-      class="w-full pl-8 pr-7 h-[34px] text-sm 
-             border border-gray-300 rounded-md
-             focus:ring-2 focus:ring-blue-600 
-             focus:border-blue-600 outline-none"
-    />
-
-    <button
-      *ngIf="search"
-      type="button"
-      (click)="search=''; applyFilters()"
-      class="absolute right-1.5 top-1/2 -translate-y-1/2
-             w-4 h-4 flex items-center justify-center
-             rounded-full hover:bg-gray-100">
-      <i class="pi pi-times text-[10px] text-gray-500"></i>
-    </button>
-  </div>
-<p-autoComplete
-  [(ngModel)]="selectedDoctor"
-  [suggestions]="doctors"
-  field="name"
-
-  placeholder="Doctor"
-  class="w-40"
-  inputStyleClass="!h-[34px] !text-sm"
-
-  [dropdown]="true"
-  [virtualScroll]="true"
-  [virtualScrollItemSize]="34"
-  [scrollHeight]="'200px'"
-
-  (completeMethod)="searchDoctors($event)">
-</p-autoComplete>
-
-  <!-- Follow-up Range -->
-  <p-calendar
-    [(ngModel)]="followUpRange"
-    selectionMode="range"
-    dateFormat="yy-mm-dd"
-    placeholder="Follow-up"
-    [showIcon]="true"
-    class="w-40"
-    styleClass="!h-[34px] !text-sm"
-    (onSelect)="applyFilters()">
-  </p-calendar>
-
-  <!-- Clear Filters Icon -->
-  <button
-    type="button"
-    (click)="resetFilters()"
-    class="w-[34px] h-[34px] flex items-center justify-center
+  <input
+    pInputText
+    type="text"
+    [(ngModel)]="search"
+    (input)="applyFilters()"
+    placeholder="Search..."
+    class="w-full pl-8 pr-7 h-[34px] text-sm
            border border-gray-300 rounded-md
-           hover:bg-gray-100 transition"
-    pTooltip="Clear all filters"
-    tooltipPosition="top">
-    <i class="pi pi-filter-slash text-sm text-gray-600"></i>
-  </button>
+           focus:ring-2 focus:ring-blue-600
+           focus:border-blue-600 outline-none" style="
+    padding-left: 34px;
+"
+  />
 
-  <!-- Add Patient -->
   <button
+    *ngIf="search"
     type="button"
-    (click)="onAddUser()"
-    class="flex items-center gap-1.5 px-3 h-[34px] text-sm
+    (click)="search=''; applyFilters()"
+    class="absolute right-1.5 top-1/2 -translate-y-1/2
+           w-4 h-4 flex items-center justify-center
+           rounded-full hover:bg-gray-100">
+    <i class="pi pi-times text-[10px] text-gray-500"></i>
+  </button>
+</div>
+          <p-autoComplete [(ngModel)]="selectedDoctor" [suggestions]="doctors" field="name" placeholder="Doctor"
+            class="w-40" inputStyleClass="!h-[34px] !text-sm" [dropdown]="true" [virtualScroll]="true"
+            [virtualScrollItemSize]="34" [scrollHeight]="'200px'" (completeMethod)="searchDoctors($event)">
+          </p-autoComplete>
+
+          <!-- Follow-up Range -->
+          <!-- <p-calendar [(ngModel)]="followUpRange" selectionMode="range" dateFormat="dd-mm-yy" placeholder="Follow-up"
+            [showIcon]="true" class="w-40" styleClass="!h-[34px] !text-sm" (onSelect)="applyFilters()">
+          </p-calendar> -->
+          <!-- Follow-up From -->
+<p-calendar
+  [(ngModel)]="followUpFrom"
+  dateFormat="dd-mm-yy"
+  placeholder="From"
+  [showIcon]="true"
+  class="w-36"
+  styleClass="!h-[34px] !text-sm"
+  (onSelect)="applyFilters()">
+</p-calendar>
+
+<!-- Follow-up To -->
+<p-calendar
+  [(ngModel)]="followUpTo"
+  dateFormat="dd-mm-yy"
+  placeholder="To"
+  [showIcon]="true"
+  class="w-36"
+  styleClass="!h-[34px] !text-sm"
+  (onSelect)="applyFilters()">
+</p-calendar>
+
+          <!-- Clear Filters Icon -->
+          <button type="button" (click)="resetFilters()" class="w-[34px] h-[34px] flex items-center justify-center
+           border border-gray-300 rounded-md
+           hover:bg-gray-100 transition" pTooltip="Clear all filters" tooltipPosition="top">
+            <i class="pi pi-filter-slash text-sm text-gray-600"></i>
+          </button>
+
+          <!-- Add Patient -->
+          <button type="button" (click)="onAddUser()" class="flex items-center gap-1.5 px-3 h-[34px] text-sm
            bg-blue-700 text-white rounded-md
            hover:bg-blue-600 shadow-sm
            transition whitespace-nowrap">
-    <i class="pi pi-plus text-sm"></i>
-    Add Patient
-  </button>
+            <i class="pi pi-plus text-sm"></i>
+            Add Patient
+          </button>
 
-</div>
+        </div>
       </div>
     </div>
 
     <!-- TABLE SECTION -->
     <div class="flex-1 min-h-0">
-<p-table
-  #dt
-  [value]="userData"
-
-  [lazy]="true"
-  (onLazyLoad)="loadLazy($event)"
-  [totalRecords]="totalRecords"
-
-  [virtualScroll]="true"
-  [virtualScrollItemSize]="60"
-
-  [scrollable]="true"
-  scrollHeight="400px"
-
-  [rows]="pageSize"
->
+      <p-table #dt [value]="userData" [lazy]="true" (onLazyLoad)="loadLazy($event)" [totalRecords]="totalRecords"
+        [virtualScroll]="true" [virtualScrollItemSize]="60" [scrollable]="true" scrollHeight="300px" [rows]="pageSize">
         <!-- HEADER -->
         <ng-template pTemplate="header">
           <tr class="bg-indigo-50">
 
-            <th pSortableColumn="id" class="font-bold px-6 py-4">
+            <th pSortableColumn="id" class="font-bold px-6 py-2">
               ID
               <p-sortIcon field="id"></p-sortIcon>
             </th>
 
-            <th pSortableColumn="name" class="font-bold px-6 py-4">
+            <th pSortableColumn="name" class="font-bold px-6 py-2">
               Name
               <p-sortIcon field="name"></p-sortIcon>
             </th>
 
-            <th pSortableColumn="contactNumber" class="font-bold px-6 py-4">
+            <th pSortableColumn="contactNumber" class="font-bold px-6 py-2">
               Contact
               <p-sortIcon field="contactNumber"></p-sortIcon>
             </th>
 
-            <th pSortableColumn="email" class="font-bold px-6 py-4">
+            <th pSortableColumn="email" class="font-bold px-6 py-2">
               Email
               <p-sortIcon field="email"></p-sortIcon>
             </th>
 
-            <th pSortableColumn="doctorName" class="font-bold px-6 py-4">
+            <th pSortableColumn="doctorName" class="font-bold px-6 py-2">
               Doctor
               <p-sortIcon field="doctorName"></p-sortIcon>
             </th>
 
-            <th pSortableColumn="illness" class="font-bold px-6 py-4">
+            <th pSortableColumn="illness" class="font-bold px-6 py-2">
               Illness
               <p-sortIcon field="illness"></p-sortIcon>
             </th>
 
-            <th pSortableColumn="nextFollowupDate" class="font-bold px-6 py-4">
+            <th pSortableColumn="nextFollowupDate" class="font-bold px-6 py-2">
               Follow-up
               <p-sortIcon field="nextFollowupDate"></p-sortIcon>
             </th>
-
+            <th class="font-bold px-6 py-2 ">
+              Actions
+            </th>
           </tr>
         </ng-template>
 
@@ -165,16 +149,28 @@
         <ng-template pTemplate="body" let-patient>
           <tr class="hover:bg-indigo-50 transition border-b">
 
-            <td class="px-6 py-4 font-semibold">#{{ patient.id }}</td>
-            <td class="px-6 py-4">{{ patient.name }}</td>
-            <td class="px-6 py-4">{{ patient.contactNumber }}</td>
-            <td class="px-6 py-4">{{ patient.email }}</td>
-            <td class="px-6 py-4">{{ patient.doctorName }}</td>
-            <td class="px-6 py-4">{{ patient.illness }}</td>
-            <td class="px-6 py-4 text-indigo-600 font-semibold">
-              {{ patient.nextFollowupDate }}
+            <td class="px-6 py-2 font-semibold">#{{ patient.id }}</td>
+            <td class="px-6 py-2">{{ patient.name }}</td>
+            <td class="px-6 py-2">{{ patient.contactNumber }}</td>
+            <td class="px-6 py-2">{{ patient.email }}</td>
+            <td class="px-6 py-2">{{ patient.doctorName }}</td>
+            <td class="px-6 py-2">{{ patient.illness }}</td>
+            <td class="px-6 py-2 text-indigo-600 font-semibold">
+              {{ patient.nextFollowupDate | date:'dd-MM-yyyy' }}
             </td>
+            <td class="px-6 py-1 text-center">
+              <div class="flex items-center justify-center">
 
+                <!-- Popup Menu -->
+                <p-menu #menu [popup]="true" [model]="rowMenuItems"  appendTo="body"></p-menu>
+
+                <!-- 3 Dots Button -->
+                <button pButton type="button" icon="pi pi-ellipsis-v" class="p-button-text p-button-sm"
+                  pTooltip="More Options" tooltipPosition="top" (click)="openMenu(menu, patient, $event)">
+                </button>
+
+              </div>
+            </td>
           </tr>
         </ng-template>
 
@@ -207,8 +203,24 @@
         <i class="pi pi-times text-gray-600 text-lg"></i>
       </button>
     </div>
-
-    <app-add-patient (close)="handleClose()"></app-add-patient>
-
+    <app-add-patient [patient]="selectedPatient" [isEditMode]="isEditMode" [loadDraft]="loadDraft"
+      (close)="handleClose()">
+    </app-add-patient>
   </div>
 </div>
+<p-dialog [(visible)]="showViewDialog" [modal]="true" [style]="{ width: '70vw' }" [breakpoints]="{ '960px': '90vw' }"
+  [draggable]="false" [resizable]="false" header="Patient Details">
+
+  <app-patient-view [patient]="viewPatient"
+  (scheduleAppointment)="onAppointment($event)">
+</app-patient-view>
+</p-dialog>
+<app-appointment-dialog
+  [patient]="selectedPatient"
+  [(visible)]="appointmentDialogVisible">
+</app-appointment-dialog>
+<app-clinical-record-dialog
+  [(visible)]="clinicalDialogVisible"
+  [patient]="patient"
+  (visibleChange)="loadClinicalRecords()">
+</app-clinical-record-dialog>

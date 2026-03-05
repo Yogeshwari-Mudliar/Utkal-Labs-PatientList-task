@@ -22,7 +22,23 @@ export class PatientService {
     patients.push(patient);
     this.savePatients(patients);
   }
+updatePatient(updatedPatient: Patient): void {
 
+  const patients = this.getPatients();
+
+  const index = patients.findIndex(
+    p => p.id === updatedPatient.id
+  );
+
+  if (index === -1) {
+    console.error('Patient not found for update');
+    return;
+  }
+
+  patients[index] = updatedPatient;
+
+  this.savePatients(patients);
+}
   generatePatientId(): string {
     return 'PAT-' + Date.now();
   }
