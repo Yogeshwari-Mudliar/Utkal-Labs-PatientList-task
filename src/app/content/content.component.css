@@ -11,3 +11,45 @@
 :host ::ng-deep .custom-table .p-paginator .p-paginator-page {
   @apply px-2 py-1 rounded hover:bg-indigo-100;
 }
+.p-datatable td,
+.p-datatable th {
+  padding: 8px 12px !important;
+}
+/* paginator selected page */
+.p-paginator .p-paginator-page.p-highlight {
+  background: #3b82f6 !important;
+  border-color: #3b82f6 !important;
+  color: white !important;
+}
+
+/* paginator hover */
+.p-paginator .p-paginator-page:hover {
+  background: #dbeafe !important;
+  color: #1d4ed8 !important;
+}
+/* Table header light blue */
+.table-header th {
+  background-color: #e1ebf8 !important; /* light blue */
+  color: #2c4db8 !important;
+  font-weight: 600;
+  padding: 10px;
+}
+
+/* Reduce sort icon size */
+:host ::ng-deep .small-sort-table .p-sortable-column-icon {
+  font-size: 10px;
+  margin-left: 4px;
+}
+
+/* Optional: make header text slightly compact */
+:host ::ng-deep .small-sort-table .p-datatable-thead > tr > th {
+  font-size: 13px;
+  padding: 8px 10px;
+}
+
+/* Align icon properly with header text */
+:host ::ng-deep .small-sort-table .p-sortable-column {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}

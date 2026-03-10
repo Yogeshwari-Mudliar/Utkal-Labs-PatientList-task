@@ -1,138 +1,228 @@
-<div class="p-4">
+<div class="p-2 text-sm">
 
-  <h2 class="text-xl font-semibold mb-4">
-    Patient: {{ patient?.name }}
-  </h2>
+  <!-- HEADER -->
+  <div class="flex justify-between items-center mb-4 border-b pb-2">
 
-  <p-tabView>
-
-    <!-- DETAILS TAB -->
-    <p-tabPanel header="Details">
-      <div class="grid grid-cols-2 gap-4">
-        <div><strong>ID:</strong> {{ patient?.id }}</div>
-        <div><strong>Email:</strong> {{ patient?.email }}</div>
-        <div><strong>Contact:</strong> {{ patient?.contactNumber }}</div>
-        <div><strong>Doctor:</strong> {{ patient?.doctorName }}</div>
-        <div><strong>Illness:</strong> {{ patient?.illness }}</div>
-        <div><strong>Last Visit:</strong> {{ patient?.lastVisitDate }}</div>
-      </div>
-    </p-tabPanel>
-
- <p-tabPanel header="Appointments">
-
-  <!-- Header Section -->
-  <div class="flex justify-between items-center mb-3">
     <div>
-      <p><strong>Last Visit:</strong> {{ patient?.lastVisitDate }}</p>
-      <p><strong>Next Follow-up:</strong> {{ patient?.nextFollowupDate }}</p>
+      <h2 class="text-lg font-semibold leading-tight">
+        {{ patient?.name }}
+      </h2>
+      <div class="text-xs text-gray-500">
+        Patient ID: {{ patient?.id }}
+      </div>
     </div>
 
-    <button
-      pButton
-      icon="pi pi-plus"
-      class="p-button-sm"
-      label="New Appointment"
-      (click)="appointmentDialogVisible = true">
-    </button>
+    <div class="text-xs text-gray-600">
+      <span class="font-medium">Doctor:</span>
+      {{ patient?.doctorName }}
+    </div>
+
   </div>
 
-  <!-- Appointment History Table -->
-  <p-table [value]="appointments" *ngIf="appointments.length > 0">
 
-    <ng-template pTemplate="header">
-      <tr>
-        <th>Date</th>
-        <th>Time</th>
-        <th>Type</th>
-        <th>Status</th>
-        <th>Reason</th>
-      </tr>
-    </ng-template>
+  <!-- MAIN LAYOUT -->
+  <div class="flex gap-4">
 
-    <ng-template pTemplate="body" let-appt>
-      <tr>
-        <td>{{ appt.appointmentDate }}</td>
-        <td>{{ appt.appointmentTime }}</td>
-        <td>{{ appt.type }}</td>
-        <td>
-          <span
-            [ngClass]="{
-              'text-green-600': appt.status === 'Completed',
-              'text-blue-600': appt.status === 'Scheduled',
-              'text-red-600': appt.status === 'Cancelled',
-              'text-orange-600': appt.status === 'No-Show'
-            }">
-            {{ appt.status }}
-          </span>
-        </td>
-        <td>{{ appt.reason }}</td>
-      </tr>
-    </ng-template>
+    <!-- LEFT PANEL -->
+    <div class="w-1/4 sticky top-4">
 
-  </p-table>
+      <div class="bg-white">
 
-  <div *ngIf="appointments.length === 0" class="text-gray-500">
-    No appointment history available.
-  </div>
+        <div class="text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">
+          Patient Summary
+        </div>
 
-</p-tabPanel>
+        <div class="space-y-2 text-xs">
 
-    <!-- PRESCRIPTION TAB -->
-<p-tabPanel header="Clinical">
+          <div class="flex justify-between">
+            <span class="text-gray-500">Email</span>
+            <span class="font-medium text-gray-800 truncate">
+              {{ patient?.email }}
+            </span>
+          </div>
 
-  <div class="mb-3">
-    <button
-      pButton
-      label="Add Clinical Record"
-      icon="pi pi-plus"
-      (click)="clinicalDialogVisible = true">
-    </button>
-  </div>
+          <div class="flex justify-between">
+            <span class="text-gray-500">Contact</span>
+            <span class="font-medium text-gray-800">
+              {{ patient?.contactNumber }}
+            </span>
+          </div>
 
-  <div *ngIf="clinicalRecords.length === 0" class="text-gray-500">
-    No clinical records available.
-  </div>
+          <div class="flex justify-between">
+            <span class="text-gray-500">Illness</span>
+            <span class="font-medium text-gray-800">
+              {{ patient?.illness }}
+            </span>
+          </div>
 
-  <p-table [value]="clinicalRecords" *ngIf="clinicalRecords.length > 0">
+          <hr class="my-2">
 
-    <ng-template pTemplate="header">
-      <tr>
-        <th>Appointment Date</th>
-        <th>Prescription</th>
-        <th>Note</th>
-        <th>Attachments</th>
-      </tr>
-    </ng-template>
+          <div class="flex justify-between">
+            <span class="text-gray-500">Last Visit</span>
+            <span class="font-medium text-gray-800">
+              {{ patient?.lastVisitDate }}
+            </span>
+          </div>
 
-    <ng-template pTemplate="body" let-rec>
-      <tr>
-        <td>{{ rec.appointmentDate }}</td>
-        <td>{{ rec.prescription }}</td>
-        <td>{{ rec.note }}</td>
-        <td>{{ rec.attachments?.length || 0 }}</td>
-      </tr>
-    </ng-template>
+          <div class="flex justify-between">
+            <span class="text-gray-500">Next Follow-up</span>
+            <span class="font-medium text-gray-800">
+              {{ patient?.nextFollowupDate }}
+            </span>
+          </div>
 
-  </p-table>
+        </div>
 
-</p-tabPanel>
-
-    <!-- BILLING TAB -->
-    <p-tabPanel header="Billing">
-      <div>
-        <p>Billing history will appear here.</p>
       </div>
-    </p-tabPanel>
 
-  </p-tabView>
+    </div>
+
+
+    <!-- RIGHT PANEL -->
+    <div class="w-3/4 border rounded-lg p-2 shadow-sm">
+
+      <p-tabView>
+
+        <!-- APPOINTMENTS -->
+        <p-tabPanel header="Appointments">
+
+          <div class="flex justify-end mb-2">
+
+            <button
+              pButton
+              icon="pi pi-plus"
+              class="p-button-sm text-xs"
+              label="New Appointment"
+              (click)="appointmentDialogVisible = true">
+            </button>
+
+          </div>
+
+          <p-table
+            [value]="appointments"
+            styleClass="p-datatable-sm"
+            *ngIf="appointments.length > 0"
+          >
+
+            <ng-template pTemplate="header">
+              <tr class="text-xs">
+                <th>Date</th>
+                <th>Time</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Reason</th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-appt>
+              <tr class="text-xs">
+                <td>{{ appt.appointmentDate }}</td>
+                <td>{{ appt.appointmentTime }}</td>
+                <td>{{ appt.type }}</td>
+
+                <td>
+                  <span
+                    class="font-medium"
+                    [ngClass]="{
+                      'text-green-600': appt.status === 'Completed',
+                      'text-blue-600': appt.status === 'Scheduled',
+                      'text-red-600': appt.status === 'Cancelled',
+                      'text-orange-600': appt.status === 'No-Show'
+                    }">
+                    {{ appt.status }}
+                  </span>
+                </td>
+
+                <td class="text-gray-700">
+                  {{ appt.reason }}
+                </td>
+
+              </tr>
+            </ng-template>
+
+          </p-table>
+
+          <div *ngIf="appointments.length === 0" class="text-xs text-gray-500">
+            No appointment history available.
+          </div>
+
+        </p-tabPanel>
+
+
+        <!-- CLINICAL -->
+        <p-tabPanel header="Clinical">
+
+          <div class="flex justify-end mb-2">
+
+            <button
+              pButton
+              label="Add Clinical Record"
+              icon="pi pi-plus"
+              class="p-button-sm text-xs"
+              (click)="clinicalDialogVisible = true">
+            </button>
+
+          </div>
+
+          <div *ngIf="clinicalRecords.length === 0" class="text-xs text-gray-500">
+            No clinical records available.
+          </div>
+
+          <p-table
+            [value]="clinicalRecords"
+            styleClass="p-datatable-sm"
+            *ngIf="clinicalRecords.length > 0"
+          >
+
+            <ng-template pTemplate="header">
+              <tr class="text-xs">
+                <th>Date</th>
+                <th>Prescription</th>
+                <th>Note</th>
+                <th>Files</th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-rec>
+              <tr class="text-xs">
+                <td>{{ rec.appointmentDate }}</td>
+                <td>{{ rec.prescription }}</td>
+                <td>{{ rec.note }}</td>
+                <td>{{ rec.attachments?.length || 0 }}</td>
+              </tr>
+            </ng-template>
+
+          </p-table>
+
+        </p-tabPanel>
+
+
+        <!-- BILLING -->
+        <p-tabPanel header="Billing">
+
+          <div class="text-xs text-gray-600">
+            Billing history will appear here.
+          </div>
+
+        </p-tabPanel>
+
+      </p-tabView>
+
+    </div>
+
+  </div>
 
 </div>
+
+
+<!-- DIALOGS -->
 
 <app-appointment-dialog
   [(visible)]="appointmentDialogVisible"
   [patient]="patient"
   (visibleChange)="loadAppointments()">
 </app-appointment-dialog>
+
 <app-clinical-record-dialog
   [(visible)]="clinicalDialogVisible"
   [patient]="patient"

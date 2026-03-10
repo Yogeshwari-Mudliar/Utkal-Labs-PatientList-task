@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TabViewModule } from 'primeng/tabview';
 import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
 import { ClinicalComponent } from './clinical/clinical.component';
 import { Appointment } from '../content/content.component';
 import { TableModule } from 'primeng/table';
@@ -12,7 +13,7 @@ import { ClinicalRecordDialogComponent } from './clinical/clinical-record-dialog
   selector: 'app-patient-view',
   standalone: true,
   imports: [CommonModule, TabViewModule, ButtonModule,ClinicalComponent, TableModule,          // ✅ FIX
-    ButtonModule,ClinicalRecordDialogComponent,
+    ButtonModule,ClinicalRecordDialogComponent,CardModule,
     AppointmentDialogComponent 
   ],
   templateUrl: './patient-view.component.html'
