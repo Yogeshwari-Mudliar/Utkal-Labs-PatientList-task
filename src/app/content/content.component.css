@@ -29,12 +29,11 @@
 }
 /* Table header light blue */
 .table-header th {
-  background-color: #e1ebf8 !important; /* light blue */
-  color: #2c4db8 !important;
+  background: #f8fafc !important;
+  color: #374151 !important;
   font-weight: 600;
-  padding: 10px;
+  border-bottom: 1px solid #e5e7eb;
 }
-
 /* Reduce sort icon size */
 :host ::ng-deep .small-sort-table .p-sortable-column-icon {
   font-size: 10px;
@@ -52,4 +51,20 @@
   display: flex;
   align-items: center;
   gap: 4px;
+}
+/* Sort icon fix */
+.p-sortable-column .p-sortable-column-icon {
+  font-size: 0.6rem !important;
+  margin-left: 2px !important;
+}
+
+/* If above doesn't work, target the icon element directly */
+p-sortIcon .p-icon {
+  width: 0.65rem !important;
+  height: 0.65rem !important;
+}
+
+p-sortIcon svg {
+  width: 0.65rem !important;
+  height: 0.65rem !important;
 }

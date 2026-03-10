@@ -207,3 +207,20 @@ button {
   --p-button-outlined-primary-hover-border-color: #2563eb;
   --p-button-outlined-primary-hover-color: #1d4ed8;
 }
+.p-datatable tbody tr:hover {
+  background: #f9fafb;
+}
+
+.p-datatable thead th {
+  font-weight: 600;
+}
+
+.table-header th {
+  background: #f8fafc;
+  font-weight: 600;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.p-datatable tbody tr:hover {
+  background: #eff6ff;
+}

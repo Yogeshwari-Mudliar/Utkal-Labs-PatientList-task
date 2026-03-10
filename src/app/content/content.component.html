@@ -1,51 +1,48 @@
-<div class="h-screen bg-gradient-to-b from-indigo-100 via-white to-blue-100 py-4 px-6">
+<div class="h-[100%] bg-gray-100 font-sans py-4 px-6 overflow-hidden">
+  <div class="flex items-center justify-between mb-3 ">
+    <!-- Title -->
+    <h2 class=" flex items-center gap-2 text-xl font-bold text-gray-800 tracking-tight">
+      Patient Registry – <span class="text-gray-400 font-normal text-base">[Date]</span>
+    </h2>
 
+    <!-- Add Patient -->
+    <button type="button" (click)="onAddUser()" class="flex items-center gap-1.5 px-4 h-9 text-sm font-semibold
+       bg-blue-600 text-white rounded-lg
+       hover:bg-blue-700 shadow-sm
+       transition whitespace-nowrap">
+      <i class="pi pi-plus text-sm"></i>
+      Add Patient
+    </button>
+  </div>
   <!-- Dashboard Card -->
-  <div class="h-[87%] flex flex-col backdrop-blur-xl bg-white/60 
-              border border-white/40 shadow-2xl rounded-3xl p-6 
-              overflow-hidden">
+  <div class="h-[90%] flex flex-col bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden">
 
     <!-- Toolbar -->
-    <div class="flex flex-col gap-3 mb-4">
+    <div class="flex flex-col gap-3 mb-4 p-4 pb-2">
 
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
 
-        <!-- Title -->
-        <h2 class="text-lg font-semibold text-gray-800 tracking-wide">
-          PATIENT LIST
-        </h2>
 
         <!-- Right Controls -->
         <div class="flex flex-wrap items-center gap-3">
 
           <!-- Search -->
-      <div class="relative w-56">
-  <i class="pi pi-search absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+          <div class="relative w-56">
+            <i class="pi pi-search absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
 
-  <input
-    pInputText
-    type="text"
-    [(ngModel)]="search"
-    (input)="applyFilters()"
-    placeholder="Search..."
-    class="w-full pl-8 pr-7 h-[34px] text-sm
+            <input pInputText type="text" [(ngModel)]="search" (input)="applyFilters()" placeholder="Search..." class="w-full pl-8 pr-7 h-[34px] text-sm
            border border-gray-300 rounded-md
            focus:ring-2 focus:ring-blue-600
            focus:border-blue-600 outline-none" style="
     padding-left: 34px;
-"
-  />
+" />
 
-  <button
-    *ngIf="search"
-    type="button"
-    (click)="search=''; applyFilters()"
-    class="absolute right-1.5 top-1/2 -translate-y-1/2
+            <button *ngIf="search" type="button" (click)="search=''; applyFilters()" class="absolute right-1.5 top-1/2 -translate-y-1/2
            w-4 h-4 flex items-center justify-center
            rounded-full hover:bg-gray-100">
-    <i class="pi pi-times text-[10px] text-gray-500"></i>
-  </button>
-</div>
+              <i class="pi pi-times text-[10px] text-gray-500"></i>
+            </button>
+          </div>
           <p-autoComplete [(ngModel)]="selectedDoctor" [suggestions]="doctors" field="name" placeholder="Doctor"
             class="w-40" inputStyleClass="!h-[34px] !text-sm" [dropdown]="true" [virtualScroll]="true"
             [virtualScrollItemSize]="34" [scrollHeight]="'200px'" (completeMethod)="searchDoctors($event)">
@@ -56,26 +53,14 @@
             [showIcon]="true" class="w-40" styleClass="!h-[34px] !text-sm" (onSelect)="applyFilters()">
           </p-calendar> -->
           <!-- Follow-up From -->
-<p-calendar
-  [(ngModel)]="followUpFrom"
-  dateFormat="dd-mm-yy"
-  placeholder="From"
-  [showIcon]="true"
-  class="w-36"
-  styleClass="!h-[34px] !text-sm"
-  (onSelect)="applyFilters()">
-</p-calendar>
+          <p-calendar [(ngModel)]="followUpFrom" dateFormat="dd-mm-yy" placeholder="From" [showIcon]="true" class="w-36"
+            styleClass="!h-[34px] !text-sm" (onSelect)="applyFilters()">
+          </p-calendar>
 
-<!-- Follow-up To -->
-<p-calendar
-  [(ngModel)]="followUpTo"
-  dateFormat="dd-mm-yy"
-  placeholder="To"
-  [showIcon]="true"
-  class="w-36"
-  styleClass="!h-[34px] !text-sm"
-  (onSelect)="applyFilters()">
-</p-calendar>
+          <!-- Follow-up To -->
+          <p-calendar [(ngModel)]="followUpTo" dateFormat="dd-mm-yy" placeholder="To" [showIcon]="true" class="w-36"
+            styleClass="!h-[34px] !text-sm" (onSelect)="applyFilters()">
+          </p-calendar>
 
           <!-- Clear Filters Icon -->
           <button type="button" (click)="resetFilters()" class="w-[34px] h-[34px] flex items-center justify-center
@@ -84,154 +69,122 @@
             <i class="pi pi-filter-slash text-sm text-gray-600"></i>
           </button>
 
-          <!-- Add Patient -->
-          <button type="button" (click)="onAddUser()" class="flex items-center gap-1.5 px-3 h-[34px] text-sm
-           bg-blue-700 text-white rounded-md
-           hover:bg-blue-600 shadow-sm
-           transition whitespace-nowrap">
-            <i class="pi pi-plus text-sm"></i>
-            Add Patient
-          </button>
 
         </div>
       </div>
     </div>
 
     <!-- TABLE SECTION -->
- <div class="flex-1 min-h-0 text-sm">
-  <p-table
-    #dt
-    [value]="userData"
-    [lazy]="true"
-    (onLazyLoad)="loadLazy($event)"
-    [totalRecords]="totalRecords"
-    [virtualScroll]="true"
-    [virtualScrollItemSize]="48"
-    [scrollable]="true"
-    scrollHeight="280px"
-    [rows]="pageSize"
-  >
+    <div class="flex-1 min-h-0 text-sm">
+      <p-table #dt [value]="userData" [lazy]="true" (onLazyLoad)="loadLazy($event)" [totalRecords]="totalRecords"
+        [virtualScroll]="true" [virtualScrollItemSize]="48" [scrollable]="true" scrollHeight="290px" [rows]="pageSize">
 
-    <!-- HEADER -->
-<ng-template pTemplate="header">
-    <tr class="table-header">
+        <!-- HEADER -->
+        <ng-template pTemplate="header">
+          <tr class="bg-gray-50 border-b border-gray-200">
 
-      <th pSortableColumn="id">
-        ID
-        <p-sortIcon field="id"></p-sortIcon>
-      </th>
+            <th pSortableColumn="id" class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              ID
+              <p-sortIcon field="id"></p-sortIcon>
+            </th>
 
-      <th pSortableColumn="name">
-        Name
-        <p-sortIcon field="name"></p-sortIcon>
-      </th>
+            <th pSortableColumn="name" class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Name 
+              <p-sortIcon field="name"></p-sortIcon>
+            </th>
 
-      <th pSortableColumn="contactNumber">
-        Contact
-        <p-sortIcon field="contactNumber"></p-sortIcon>
-      </th>
+            <th pSortableColumn="contactNumber" class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Contact
+              <p-sortIcon field="contactNumber"></p-sortIcon>
+            </th>
 
-      <th pSortableColumn="email">
-        Email
-        <p-sortIcon field="email"></p-sortIcon>
-      </th>
+            <!-- <th pSortableColumn="email" class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Email
+              <p-sortIcon field="email"></p-sortIcon>
+            </th> -->
 
-      <th pSortableColumn="doctorName">
-        Doctor
-        <p-sortIcon field="doctorName"></p-sortIcon>
-      </th>
+            <th pSortableColumn="doctorName" class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Doctor
+              <p-sortIcon field="doctorName"></p-sortIcon>
+            </th>
 
-      <th pSortableColumn="illness">
-        Illness
-        <p-sortIcon field="illness"></p-sortIcon>
-      </th>
+            <th pSortableColumn="illness" class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Illness
+              <p-sortIcon field="illness"></p-sortIcon>
+            </th>
 
-      <th pSortableColumn="nextFollowupDate">
-        Follow-up
-        <p-sortIcon field="nextFollowupDate"></p-sortIcon>
-      </th>
+            <th pSortableColumn="nextFollowupDate" class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Follow-up
+              <p-sortIcon field="nextFollowupDate"></p-sortIcon>
+            </th>
 
-      <th class="text-center">
-        Actions
-      </th>
+            <th class="text-center" >
+              Actions
+            </th>
 
-    </tr>
-  </ng-template>
+          </tr>
+        </ng-template>
 
+        <!-- BODY -->
+        <ng-template pTemplate="body" let-patient>
+          <tr  class="border-b border-gray-100 hover:bg-blue-50/40 transition-colors">
 
-    <!-- BODY -->
-    <ng-template pTemplate="body" let-patient>
-      <tr class="hover:bg-blue-50 transition border-b">
+            <td class="px-4 py-3 text-sm text-gray-700">#{{ patient.id }}</td>
+            <td class="px-4 py-3">
+  <div class="text-sm font-medium text-gray-800">{{ patient.name }}</div>
+  <div class="text-xs text-gray-400">{{ patient.email }}</div>
+</td>
+            <td class="px-4 py-3 text-sm text-gray-700">{{ patient.contactNumber }}</td>
+            <!-- <td class="px-4 py-3 text-sm text-gray-700">{{ patient.email }}</td> -->
+            <td class="px-4 py-3 text-sm text-gray-700">{{ patient.doctorName }}</td>
+            <td class="px-4 py-3 text-sm text-gray-700">{{ patient.illness }}</td>
 
-        <td class="px-3 py-2 font-medium">#{{ patient.id }}</td>
-        <td class="px-3 py-2">{{ patient.name }}</td>
-        <td class="px-3 py-2">{{ patient.contactNumber }}</td>
-        <td class="px-3 py-2">{{ patient.email }}</td>
-        <td class="px-3 py-2">{{ patient.doctorName }}</td>
-        <td class="px-3 py-2">{{ patient.illness }}</td>
+            <td class="px-4 py-3 text-sm text-gray-700 text-blue-600 font-medium">
+              {{ patient.nextFollowupDate | date:'dd-MM-yyyy' }}
+            </td>
 
-        <td class="px-3 py-2 text-blue-600 font-medium">
-          {{ patient.nextFollowupDate | date:'dd-MM-yyyy' }}
-        </td>
+            <td class="px-4 py-3 text-sm text-gray-700 text-center">
+              <div class="flex items-center justify-center">
 
-        <td class="px-3 py-2 text-center">
-          <div class="flex items-center justify-center">
+                <p-menu #menu [popup]="true" [model]="rowMenuItems" appendTo="body"></p-menu>
 
-            <p-menu #menu [popup]="true" [model]="rowMenuItems" appendTo="body"></p-menu>
+                <button pButton type="button" icon="pi pi-ellipsis-v" class="p-button-text p-button-sm"
+                  pTooltip="More Options" tooltipPosition="top" (click)="openMenu(menu, patient, $event)">
+                </button>
 
-            <button
-              pButton
-              type="button"
-              icon="pi pi-ellipsis-v"
-              class="p-button-text p-button-sm"
-              pTooltip="More Options"
-              tooltipPosition="top"
-              (click)="openMenu(menu, patient, $event)">
-            </button>
+              </div>
+            </td>
 
-          </div>
-        </td>
+          </tr>
+        </ng-template>
 
-      </tr>
-    </ng-template>
+      </p-table>
 
-  </p-table>
+      <!-- PAGINATOR -->
+      <!-- <p-paginator class="mt-2 text-sm" [rows]="pageSize" [totalRecords]="totalRecords" [first]="currentFirst"
+        [rowsPerPageOptions]="[5,10,20]" (onPageChange)="externalPageChange($event)">
+      </p-paginator> -->
 
-  <!-- PAGINATOR -->
-  <p-paginator
-    class="mt-2 text-sm"
-    [rows]="pageSize"
-    [totalRecords]="totalRecords"
-    [first]="currentFirst"
-    [rowsPerPageOptions]="[5,10,20]"
-    (onPageChange)="externalPageChange($event)">
-  </p-paginator>
-
-</div>
+    </div>
 
   </div>
 </div>
 
 <!-- Overlay Modal -->
-<div *ngIf="showAddPatient"
-     class="fixed inset-0 z-[1000] flex items-center justify-center px-4 py-8">
+<div *ngIf="showAddPatient" class="fixed inset-0 z-[1000] flex items-center justify-center px-4 py-8">
 
   <!-- Background Overlay -->
-  <div
-    class="absolute inset-0 bg-black/60 backdrop-blur-sm"
-    (click)="handleOverlayClose()">
+  <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" (click)="handleOverlayClose()">
   </div>
 
   <!-- Modal Container -->
-  <div
-    class="relative bg-white rounded-xl shadow-2xl
+  <div class="relative bg-white rounded-xl shadow-2xl
            w-full max-w-4xl
            max-h-[90vh]
            flex flex-col overflow-hidden">
 
     <!-- Header -->
-    <div
-      class="flex justify-between items-center
+    <div class="flex justify-between items-center
              bg-blue-50 border-b border-blue-100
              px-6 py-3">
 
@@ -239,10 +192,7 @@
         {{ isEditMode ? 'Edit Patient' : 'Add Patient' }}
       </h2>
 
-      <button
-        type="button"
-        (click)="showAddPatient = false"
-        class="w-8 h-8 flex items-center justify-center
+      <button type="button" (click)="showAddPatient = false" class="w-8 h-8 flex items-center justify-center
                rounded-full hover:bg-blue-100 transition">
 
         <i class="pi pi-times text-blue-700 text-sm"></i>
@@ -253,10 +203,7 @@
     <!-- Body -->
     <div class="overflow-y-auto p-4">
 
-      <app-add-patient
-        [patient]="selectedPatient"
-        [isEditMode]="isEditMode"
-        [loadDraft]="loadDraft"
+      <app-add-patient [patient]="selectedPatient" [isEditMode]="isEditMode" [loadDraft]="loadDraft"
         (close)="handleClose()">
       </app-add-patient>
 
@@ -264,19 +211,209 @@
 
   </div>
 </div>
-<p-dialog [(visible)]="showViewDialog" [modal]="true" [style]="{ width: '70vw' , height: '90vh' }" [breakpoints]="{ '960px': '90vw' }"
-  [draggable]="false" [resizable]="false" header="Patient Details">
+<p-dialog [(visible)]="showViewDialog" [modal]="true" [style]="{ width: '70vw' , height: '90vh' }"
+  [breakpoints]="{ '960px': '90vw' }" [draggable]="false" [resizable]="false" header="Patient Details">
 
-  <app-patient-view [patient]="viewPatient"
-  (scheduleAppointment)="onAppointment($event)">
-</app-patient-view>
+  <app-patient-view [patient]="viewPatient" (scheduleAppointment)="onAppointment($event)">
+  </app-patient-view>
 </p-dialog>
-<app-appointment-dialog
-  [patient]="selectedPatient"
-  [(visible)]="appointmentDialogVisible">
+<app-appointment-dialog [patient]="selectedPatient" [(visible)]="appointmentDialogVisible">
 </app-appointment-dialog>
-<app-clinical-record-dialog
-  [(visible)]="clinicalDialogVisible"
-  [patient]="patient"
+<app-clinical-record-dialog [(visible)]="clinicalDialogVisible" [patient]="patient"
   (visibleChange)="loadClinicalRecords()">
 </app-clinical-record-dialog>
+
+<!-- -------------------------------------------------------------------------------------- -->
+<div class="h-screen hidden bg-gray-50 py-4 px-6 font-sans">
+
+  <!-- Dashboard Card -->
+  <div class="h-[95%] flex flex-col bg-white border border-gray-200 shadow-sm rounded-2xl p-6 overflow-hidden">
+
+    <!-- Header Row -->
+    <div class="flex items-center justify-between mb-5">
+      <h2 class="text-xl font-bold text-gray-800 tracking-tight">
+        Patient Registry – <span class="text-gray-500 font-normal text-base">[Date]</span>
+      </h2>
+      <button type="button" (click)="onAddUser()" class="flex items-center gap-2 px-4 h-9 text-sm font-semibold
+               bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-sm transition">
+        <i class="pi pi-plus text-xs"></i>
+        New Patient
+      </button>
+    </div>
+
+    <!-- Toolbar Row: Status Tabs + Search -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
+
+      <!-- Status Filter Tabs -->
+      <div class="flex items-center gap-1 bg-gray-100 rounded-lg p-1 w-fit">
+        <button *ngFor="let s of statusTabs" type="button" (click)="selectStatus(s)" [class]="selectedStatus === s
+            ? 'px-4 h-8 text-sm font-semibold bg-white text-gray-800 rounded-md shadow-sm transition'
+            : 'px-4 h-8 text-sm text-gray-500 hover:text-gray-700 rounded-md transition'">
+          {{ s }}
+        </button>
+      </div>
+
+      <!-- Right: Doctor filter + From/To + Clear + Search -->
+      <div class="flex flex-wrap items-center gap-2">
+
+        <!-- Search Patients -->
+        <div class="relative w-48">
+          <i class="pi pi-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+          <input pInputText type="text" [(ngModel)]="search" (input)="applyFilters()" placeholder="Search Patients"
+            class="w-full pl-8 pr-7 h-9 text-sm border border-gray-300 rounded-lg
+                   focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white" />
+          <button *ngIf="search" type="button" (click)="search=''; applyFilters()"
+            class="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 flex items-center justify-center rounded-full hover:bg-gray-100">
+            <i class="pi pi-times text-[10px] text-gray-400"></i>
+          </button>
+        </div>
+
+        <!-- Doctor autocomplete -->
+        <p-autoComplete [(ngModel)]="selectedDoctor" [suggestions]="doctors" field="name" placeholder="Doctor"
+          class="w-36" inputStyleClass="!h-9 !text-sm !rounded-lg" [dropdown]="true" [virtualScroll]="true"
+          [virtualScrollItemSize]="34" [scrollHeight]="'200px'" (completeMethod)="searchDoctors($event)"
+          (onSelect)="applyFilters()">
+        </p-autoComplete>
+
+        <!-- Follow-up From -->
+        <p-calendar [(ngModel)]="followUpFrom" dateFormat="dd-mm-yy" placeholder="From" [showIcon]="true" class="w-32"
+          styleClass="!h-9 !text-sm !rounded-lg" (onSelect)="applyFilters()">
+        </p-calendar>
+
+        <!-- Follow-up To -->
+        <p-calendar [(ngModel)]="followUpTo" dateFormat="dd-mm-yy" placeholder="To" [showIcon]="true" class="w-32"
+          styleClass="!h-9 !text-sm !rounded-lg" (onSelect)="applyFilters()">
+        </p-calendar>
+
+        <!-- Clear Filters -->
+        <button type="button" (click)="resetFilters()" class="w-9 h-9 flex items-center justify-center border border-gray-300 rounded-lg
+                 hover:bg-gray-100 transition" pTooltip="Clear all filters" tooltipPosition="top">
+          <i class="pi pi-filter-slash text-sm text-gray-500"></i>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="flex-1 min-h-0 overflow-hidden flex flex-col">
+      <p-table #dt [value]="userData" [lazy]="true" (onLazyLoad)="loadLazy($event)" [totalRecords]="totalRecords"
+        [virtualScroll]="true" [virtualScrollItemSize]="52" [scrollable]="true" scrollHeight="280px" [rows]="pageSize"
+        styleClass="patient-table">
+
+        <!-- HEADER -->
+        <ng-template pTemplate="header">
+          <tr>
+            <th class="w-10 px-3 py-3">
+              <input type="checkbox" class="w-4 h-4 rounded accent-blue-600 cursor-pointer" />
+            </th>
+            <th pSortableColumn="id"
+              class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
+              Patient ID <p-sortIcon field="id"></p-sortIcon>
+            </th>
+            <th pSortableColumn="name"
+              class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
+              Full Name <p-sortIcon field="name"></p-sortIcon>
+            </th>
+            <th pSortableColumn="dob"
+              class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
+              DOB/Age <p-sortIcon field="dob"></p-sortIcon>
+            </th>
+            <th pSortableColumn="gender"
+              class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Gender <p-sortIcon field="gender"></p-sortIcon>
+            </th>
+            <th pSortableColumn="lastVisitDate"
+              class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
+              Last Visit Date <p-sortIcon field="lastVisitDate"></p-sortIcon>
+            </th>
+            <th pSortableColumn="doctorName"
+              class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
+              Attending Doctor <p-sortIcon field="doctorName"></p-sortIcon>
+            </th>
+            <th pSortableColumn="status"
+              class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Status <p-sortIcon field="status"></p-sortIcon>
+            </th>
+            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Actions
+            </th>
+          </tr>
+        </ng-template>
+
+        <!-- BODY -->
+        <ng-template pTemplate="body" let-patient>
+          <tr class="border-b border-gray-100 hover:bg-blue-50/40 transition-colors">
+
+            <!-- Checkbox -->
+            <td class="w-10 px-3 py-3">
+              <input type="checkbox" class="w-4 h-4 rounded accent-blue-600 cursor-pointer" />
+            </td>
+
+            <!-- Patient ID -->
+            <td class="px-4 py-3 text-sm text-gray-700 font-medium">{{ patient.id }}</td>
+
+            <!-- Full Name -->
+            <td class="px-4 py-3 text-sm text-gray-800 font-semibold">{{ patient.name }}</td>
+
+            <!-- DOB/Age -->
+            <td class="px-4 py-3 text-sm text-gray-600">
+              {{ patient.dob | date:'dd/MM/yy' }}; {{ patient.age }}
+            </td>
+
+            <!-- Gender -->
+            <td class="px-4 py-3 text-sm text-gray-600">{{ patient.gender }}</td>
+
+            <!-- Last Visit -->
+            <td class="px-4 py-3 text-sm text-gray-600">
+              {{ patient.lastVisitDate | date:'dd/MM/yyyy' }}
+            </td>
+
+            <!-- Doctor -->
+            <td class="px-4 py-3 text-sm text-gray-700">{{ patient.doctorName }}</td>
+
+            <!-- Status Badge -->
+            <td class="px-4 py-3">
+              <span [ngClass]="{
+                'bg-green-100 text-green-700':  patient.status === 'Checked-in',
+                'bg-yellow-100 text-yellow-700': patient.status === 'Waiting',
+                'bg-blue-100 text-blue-700':    patient.status === 'In-Consultation',
+                'bg-gray-100 text-gray-600':    patient.status === 'Discharge'
+              }" class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold whitespace-nowrap">
+                {{ patient.status }}
+              </span>
+            </td>
+
+            <!-- Actions -->
+            <td class="px-4 py-3">
+              <div class="flex items-center gap-2">
+                <button type="button" (click)="onView(patient)" pTooltip="View" tooltipPosition="top"
+                  class="w-7 h-7 flex items-center justify-center rounded-md hover:bg-blue-100 transition text-blue-500">
+                  <i class="pi pi-eye text-sm"></i>
+                </button>
+                <button type="button" (click)="onEdit(patient)" pTooltip="Edit" tooltipPosition="top"
+                  class="w-7 h-7 flex items-center justify-center rounded-md hover:bg-yellow-100 transition text-yellow-500">
+                  <i class="pi pi-pencil text-sm"></i>
+                </button>
+                <button type="button" (click)="onDelete(patient)" pTooltip="Delete" tooltipPosition="top"
+                  class="w-7 h-7 flex items-center justify-center rounded-md hover:bg-red-100 transition text-red-400">
+                  <i class="pi pi-trash text-sm"></i>
+                </button>
+              </div>
+            </td>
+
+          </tr>
+        </ng-template>
+
+      </p-table>
+
+      <!-- PAGINATOR -->
+      <div class="mt-auto pt-3 border-t border-gray-100">
+        <p-paginator [rows]="pageSize" [totalRecords]="totalRecords" [first]="currentFirst"
+          [rowsPerPageOptions]="[5,10,20]" (onPageChange)="externalPageChange($event)"
+          styleClass="!text-sm !p-0 !bg-transparent justify-end">
+        </p-paginator>
+      </div>
+
+    </div>
+  </div>
+</div>

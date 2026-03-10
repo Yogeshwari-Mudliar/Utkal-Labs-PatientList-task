@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UserDataService } from '../user-data.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -86,7 +86,8 @@ export interface Appointment {
     InputTextModule, AddPatientComponent
     , AutoCompleteModule, MenuModule, PatientViewComponent, TooltipModule, ClinicalRecordDialogComponent,AppointmentDialogComponent],
   templateUrl: './content.component.html',
-  styleUrl: './content.component.css'
+  styleUrl: './content.component.css',
+   encapsulation: ViewEncapsulation.None,
 })
 export class ContentComponent implements OnInit {
 
@@ -165,7 +166,13 @@ appointments: any[] = [];
       }
     ];
   }
+statusTabs = ['All', 'Waiting', 'In-Consultation', 'Discharge'];
+selectedStatus = 'All';
 
+selectStatus(status: string) {
+  this.selectedStatus = status;
+  this.applyFilters();
+}
   searchDoctors(event: any) {
 
     this.currentQuery = event.query?.toLowerCase() || '';
