@@ -1,12 +1,15 @@
-<nav class="w-64 h-screen bg-indigo-900 text-white flex flex-col">
+<nav [class]="collapsed ? 'w-12' : 'w-64'" class="h-screen bg-indigo-900 text-white flex flex-col transition-all duration-300">
 
-  <!-- Logo -->
-  <div class="px-6 py-5 text-lg font-semibold border-b border-indigo-700">
-    Utkal Lab
+  <!-- Logo + Toggle -->
+  <div class="flex items-center justify-between px-4 py-3 border-b border-indigo-700">
+    <span *ngIf="!collapsed" class="text-base font-semibold whitespace-nowrap">Utkal Lab</span>
+    <button (click)="collapsed = !collapsed"
+      class="w-8 h-8 flex items-center justify-center rounded-md hover:bg-indigo-700 transition ml-auto">
+      <i [class]="collapsed ? 'pi pi-chevron-right' : 'pi pi-chevron-left'" class="text-xs"></i>
+    </button>
   </div>
-
   <!-- Menu -->
-  <ul class="flex-1 px-3 py-4 space-y-1">
+  <ul class="flex-1 px-2 py-4 space-y-1">
 
     <li>
       <a routerLink="/dashboard"

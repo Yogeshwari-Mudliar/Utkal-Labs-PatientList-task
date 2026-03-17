@@ -1,68 +1,57 @@
+/* ---------------- FONTS ---------------- */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ---------------- BASE ---------------- */
 body {
+  font-family: 'DM Sans', sans-serif;
   @apply bg-gray-100 text-gray-900;
 }
 
 /* ---------------- THEME VARIABLES ---------------- */
-
 :root {
-
-  /* Primary blue palette */
-  --primary-50: #eff6ff;
+  --primary-50:  #eff6ff;
   --primary-100: #dbeafe;
   --primary-200: #bfdbfe;
-  --primary-300: #93c5fd;
-  --primary-400: #60a5fa;
   --primary-500: #3b82f6;
   --primary-600: #2563eb;
   --primary-700: #1d4ed8;
   --primary-800: #1e40af;
-  --primary-900: #1e3a8a;
 
-  /* PrimeNG highlight tokens */
   --highlight-bg: #dbeafe;
   --highlight-text-color: #1d4ed8;
-
-  /* Surface hover */
   --surface-hover: #eff6ff;
 
-  /* Primary button */
-  --p-button-primary-hover-background: #1d4ed8;
+  /* PrimeNG button tokens */
+  --p-button-primary-hover-background:   #1d4ed8;
   --p-button-primary-hover-border-color: #1d4ed8;
 
-  /* Outlined button */
-  --p-button-outlined-primary-border-color: #2563eb;
-  --p-button-outlined-primary-color: #2563eb;
-
-  /* FIXED hover variable (this was causing green) */
-  --p-button-outlined-primary-hover-background: #eff6ff;
-  --p-button-outlined-primary-hover-border-color: #2563eb;
-  --p-button-outlined-primary-hover-color: #1d4ed8;
-
+  --p-button-outlined-primary-color:             #2563eb;
+  --p-button-outlined-primary-border-color:      #2563eb;
+  --p-button-outlined-primary-hover-background:  #eff6ff;
+  --p-button-outlined-primary-hover-border-color:#2563eb;
+  --p-button-outlined-primary-hover-color:       #1d4ed8;
 }
 
 /* ---------------- INPUTS ---------------- */
+.p-inputtext,
+.p-inputtextarea,
+.p-dropdown {
+  &:hover { border-color: #1d4ed8 !important; }
+}
 
 .p-inputtext:enabled:focus,
-.p-dropdown:not(.p-disabled).p-focus,
-.p-inputtextarea:enabled:focus {
+.p-inputtextarea:enabled:focus,
+.p-dropdown:not(.p-disabled).p-focus {
   border-color: #1d4ed8 !important;
   box-shadow: 0 0 0 1px #1d4ed8 !important;
 }
 
-.p-inputtext:hover,
-.p-inputtextarea:hover,
-.p-dropdown:hover {
-  border-color: #1d4ed8 !important;
-}
-
 /* ---------------- BUTTONS ---------------- */
-
-.p-button,
-button {
+.p-button, button {
   height: 34px !important;
   padding: 0 12px !important;
   font-size: 14px !important;
@@ -72,17 +61,15 @@ button {
   gap: 6px !important;
 }
 
-/* Normal buttons hover */
-.p-button:not(.p-button-text):not(.p-button-outlined):hover {
-  background: #2563eb !important;
-  border-color: #2563eb !important;
-}
-/* Focus ring */
 .p-button:focus {
   box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.4) !important;
 }
 
-/* Text buttons (3-dot menu) */
+.p-button:not(.p-button-text):not(.p-button-outlined):hover {
+  background: #2563eb !important;
+  border-color: #2563eb !important;
+}
+
 .p-button.p-button-text:hover {
   background: #eff6ff !important;
   border-color: transparent !important;
@@ -90,137 +77,97 @@ button {
 }
 
 /* ---------------- FILE UPLOAD ---------------- */
-
 .p-fileupload .p-button,
 .p-fileupload-choose {
   background: #1d4ed8 !important;
   border: 1px solid #1d4ed8 !important;
   color: white !important;
-  height: 34px !important;
-  padding: 0 12px !important;
-  font-size: 14px !important;
-  border-radius: 6px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 6px !important;
+
+  &:hover {
+    background: #2563eb !important;
+    border-color: #2563eb !important;
+  }
 }
 
-.p-fileupload .p-button:hover,
-.p-fileupload-choose:hover {
-  background: #2563eb !important;
-  border-color: #2563eb !important;
+/* ---------------- TABLE ---------------- */
+.p-datatable thead th {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: #f8fafc;
+  border-bottom: 1px solid #e5e7eb;
 }
 
-/* ---------------- PAGINATOR ---------------- */
-
-.p-paginator .p-paginator-page.p-highlight {
-  background: #dbeafe !important;
-  border-color: #bfdbfe !important;
-  color: #1d4ed8 !important;
+.p-datatable tbody td {
+  font-size: 13px;
+  padding: 12px 16px;
 }
 
-.p-paginator .p-paginator-page:hover {
-  background: #eff6ff !important;
+.p-datatable tbody tr:hover {
+  background: #eff6ff;
 }
 
-.p-paginator .p-paginator-page.p-highlight:hover {
-  background: #bfdbfe !important;
-}
-
-/* ---------------- TABLE SORT ---------------- */
-
+.p-sortable-column:hover       { background: #eff6ff !important; }
 .p-sortable-column.p-highlight {
   background: #dbeafe !important;
   color: #1d4ed8 !important;
 }
+.p-sortable-column .p-sortable-column-icon { color: #1d4ed8 !important; }
 
-.p-sortable-column:hover {
-  background: #eff6ff !important;
-}
-
-.p-sortable-column .p-sortable-column-icon {
+/* ---------------- PAGINATOR ---------------- */
+.p-paginator .p-paginator-page:hover          { background: #eff6ff !important; }
+.p-paginator .p-paginator-page.p-highlight    {
+  background: #dbeafe !important;
+  border-color: #bfdbfe !important;
   color: #1d4ed8 !important;
 }
+.p-paginator .p-paginator-page.p-highlight:hover { background: #bfdbfe !important; }
 
 /* ---------------- CALENDAR ---------------- */
-
-/* Selected date */
-.p-datepicker .p-datepicker-calendar td.p-highlight {
+.p-datepicker .p-datepicker-calendar td:hover          { background: #eff6ff !important; }
+.p-datepicker .p-datepicker-calendar td.p-highlight    {
   background: #1d4ed8 !important;
   color: white !important;
 }
 
-/* Hover date */
-.p-datepicker .p-datepicker-calendar td:hover {
-  background: #eff6ff !important;
-}
-
-/* Calendar arrows */
 .p-datepicker .p-datepicker-header .p-datepicker-prev,
 .p-datepicker .p-datepicker-header .p-datepicker-next {
   color: #1d4ed8 !important;
+  &:hover { background: #eff6ff !important; }
 }
 
-.p-datepicker .p-datepicker-header .p-datepicker-prev:hover,
-.p-datepicker .p-datepicker-header .p-datepicker-next:hover {
-  background: #eff6ff !important;
-}
-/* Table sorting */
-.p-sortable-column.p-highlight {
-  background: #dbeafe !important;
-  color: #1d4ed8 !important;
+/* ---------------- SIDEBAR ---------------- */
+.sidebar {
+  width: 220px;
+  background: #fff;
+  border-right: 1px solid #e5e7eb;
 }
 
-/* Paginator active page */
-.p-paginator .p-paginator-page.p-highlight {
-  background: #dbeafe !important;
-  border-color: #bfdbfe !important;
-  color: #1d4ed8 !important;
+.nav-item {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 16px;
+  color: #6b7280;
 }
 
-/* Calendar selected date */
-.p-datepicker .p-datepicker-calendar td.p-highlight {
-  background: #3b82f6 !important;
-  color: white !important;
+.nav-item.active {
+  background: #eef2ff;
+  color: #2563eb;
+  border-radius: 8px;
 }
 
-/* Calendar arrows */
-.p-datepicker .p-datepicker-prev,
-.p-datepicker .p-datepicker-next {
-  color: #1d4ed8 !important;
+/* ---------------- BADGES ---------------- */
+.badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
 }
+
+/* ---------------- UTILITIES ---------------- */
 .blue-outline-btn {
   border: 2px solid #2563eb !important;
   color: #2563eb !important;
-}
-
-.blue-outline-btn:hover {
-  background: #eff6ff;
-}
-/* ---- PrimeNG Button Token Overrides ---- */
-
-.p-component {
-  --p-button-outlined-primary-border-color: #2563eb;
-  --p-button-outlined-primary-color: #2563eb;
-
-  --p-button-outlined-primary-hover-background: #eff6ff;
-  --p-button-outlined-primary-hover-border-color: #2563eb;
-  --p-button-outlined-primary-hover-color: #1d4ed8;
-}
-.p-datatable tbody tr:hover {
-  background: #f9fafb;
-}
-
-.p-datatable thead th {
-  font-weight: 600;
-}
-
-.table-header th {
-  background: #f8fafc;
-  font-weight: 600;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.p-datatable tbody tr:hover {
-  background: #eff6ff;
+  &:hover { background: #eff6ff; }
 }

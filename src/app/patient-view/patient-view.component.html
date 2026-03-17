@@ -1,212 +1,188 @@
-<div class="p-2 text-sm">
-
-  <!-- HEADER -->
-  <div class="flex justify-between items-center mb-4 border-b pb-2">
-
-    <div>
-      <h2 class="text-lg font-semibold leading-tight">
-        {{ patient?.name }}
-      </h2>
-      <div class="text-xs text-gray-500">
-        Patient ID: {{ patient?.id }}
-      </div>
-    </div>
-
-    <div class="text-xs text-gray-600">
-      <span class="font-medium">Doctor:</span>
-      {{ patient?.doctorName }}
-    </div>
-
-  </div>
+<!-- patient-detail.component.html -->
+<div class="bg-slate-100 min-h-screen text-sm">
 
 
-  <!-- MAIN LAYOUT -->
-  <div class="flex gap-4">
+  <!-- PAGE CONTENT -->
+  <div class="p-6 grid gap-6" style="grid-template-columns:260px 1fr;">
 
-    <!-- LEFT PANEL -->
-    <div class="w-1/4 sticky top-4">
+    <!-- LEFT PROFILE CARD -->
 
-      <div class="bg-white">
+    <div class="bg-white rounded-xl shadow border border-slate-200 p-4 text-center">
 
-        <div class="text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">
-          Patient Summary
+      <div
+  class="w-24 h-24 rounded-lg mx-auto mb-3 flex items-center justify-center
+         bg-blue-500 text-white text-2xl font-semibold">
+
+  {{ getInitials(patient?.name) }}
+
+</div>
+
+      <div class="space-y-2 text-left text-sm">
+
+        <div>
+          <span class="text-slate-500">Name:</span>
+          <span class="font-semibold ml-2">{{ patient?.name }}</span>
         </div>
 
-        <div class="space-y-2 text-xs">
+        <div>
+          <span class="text-slate-500">DOB:</span>
+          <span class="ml-2">{{ patient?.dob || '14 May 1985' }}</span>
+        </div>
 
-          <div class="flex justify-between">
-            <span class="text-gray-500">Email</span>
-            <span class="font-medium text-gray-800 truncate">
-              {{ patient?.email }}
-            </span>
-          </div>
+        <div>
+          <span class="text-slate-500">Age:</span>
+          <span class="ml-2">38</span>
+        </div>
 
-          <div class="flex justify-between">
-            <span class="text-gray-500">Contact</span>
-            <span class="font-medium text-gray-800">
-              {{ patient?.contactNumber }}
-            </span>
-          </div>
+        <div>
+          <span class="text-slate-500">Gender:</span>
+          <span class="ml-2">M</span>
+        </div>
 
-          <div class="flex justify-between">
-            <span class="text-gray-500">Illness</span>
-            <span class="font-medium text-gray-800">
-              {{ patient?.illness }}
-            </span>
-          </div>
-
-          <hr class="my-2">
-
-          <div class="flex justify-between">
-            <span class="text-gray-500">Last Visit</span>
-            <span class="font-medium text-gray-800">
-              {{ patient?.lastVisitDate }}
-            </span>
-          </div>
-
-          <div class="flex justify-between">
-            <span class="text-gray-500">Next Follow-up</span>
-            <span class="font-medium text-gray-800">
-              {{ patient?.nextFollowupDate }}
-            </span>
-          </div>
-
+        <div>
+          <span class="text-slate-500">Contact:</span>
+          <span class="ml-2">{{ patient?.contactNumber }}</span>
         </div>
 
       </div>
 
     </div>
 
+    <!-- MEDICAL HISTORY -->
 
-    <!-- RIGHT PANEL -->
-    <div class="w-3/4 border rounded-lg p-2 shadow-sm">
+    <div class="bg-white rounded-xl border border-slate-200 shadow">
 
-      <p-tabView>
+      <div class="p-4 border-b font-semibold text-slate-700">
+        MEDICAL HISTORY BY CENTER
+      </div>
 
-        <!-- APPOINTMENTS -->
-        <p-tabPanel header="Appointments">
+      <p-accordion>
 
-          <div class="flex justify-end mb-2">
+        <p-accordionTab
+          *ngFor="let center of centers"
+          [header]="center.name">
 
-            <button
-              pButton
-              icon="pi pi-plus"
-              class="p-button-sm text-xs"
-              label="New Appointment"
-              (click)="appointmentDialogVisible = true">
-            </button>
+          <!-- CENTER HEADER -->
 
-          </div>
+          <div class="flex justify-between text-xs text-slate-500 mb-3">
 
-          <p-table
-            [value]="appointments"
-            styleClass="p-datatable-sm"
-            *ngIf="appointments.length > 0"
-          >
+            <div class="flex gap-3">
+              <span>
+                <i class="pi pi-map-marker"></i>
+                {{ center.name }}
+              </span>
 
-            <ng-template pTemplate="header">
-              <tr class="text-xs">
-                <th>Date</th>
-                <th>Time</th>
-                <th>Type</th>
-                <th>Status</th>
-                <th>Reason</th>
-              </tr>
-            </ng-template>
+              <span>
+                <i class="pi pi-history"></i>
+                {{ center.visits.length }} Visits
+              </span>
+            </div>
 
-            <ng-template pTemplate="body" let-appt>
-              <tr class="text-xs">
-                <td>{{ appt.appointmentDate }}</td>
-                <td>{{ appt.appointmentTime }}</td>
-                <td>{{ appt.type }}</td>
-
-                <td>
-                  <span
-                    class="font-medium"
-                    [ngClass]="{
-                      'text-green-600': appt.status === 'Completed',
-                      'text-blue-600': appt.status === 'Scheduled',
-                      'text-red-600': appt.status === 'Cancelled',
-                      'text-orange-600': appt.status === 'No-Show'
-                    }">
-                    {{ appt.status }}
-                  </span>
-                </td>
-
-                <td class="text-gray-700">
-                  {{ appt.reason }}
-                </td>
-
-              </tr>
-            </ng-template>
-
-          </p-table>
-
-          <div *ngIf="appointments.length === 0" class="text-xs text-gray-500">
-            No appointment history available.
-          </div>
-
-        </p-tabPanel>
-
-
-        <!-- CLINICAL -->
-        <p-tabPanel header="Clinical">
-
-          <div class="flex justify-end mb-2">
-
-            <button
-              pButton
-              label="Add Clinical Record"
-              icon="pi pi-plus"
-              class="p-button-sm text-xs"
-              (click)="clinicalDialogVisible = true">
-            </button>
+            <div>
+              Last: {{ center.lastVisit }}
+            </div>
 
           </div>
 
-          <div *ngIf="clinicalRecords.length === 0" class="text-xs text-gray-500">
-            No clinical records available.
+          <!-- CONTENT GRID -->
+
+          <div class="grid gap-4"
+               style="grid-template-columns:1fr 1fr;">
+
+            <!-- VISIT TIMELINE -->
+
+            <div class="bg-slate-50 p-4 rounded-lg">
+
+              <div class="font-semibold mb-3">
+                P-TIMELINE VISITS
+              </div>
+
+              <p-timeline
+                [value]="center.visits"
+                layout="vertical">
+
+                <ng-template pTemplate="content" let-event>
+
+                  <div>
+
+                    <div class="font-semibold text-slate-800">
+                      {{ event.title }}
+                    </div>
+
+                    <div class="text-xs text-slate-500">
+                      {{ event.doctor }}
+                    </div>
+
+                  </div>
+
+                </ng-template>
+
+                <ng-template pTemplate="opposite" let-event>
+                  {{ event.date }}
+                </ng-template>
+
+              </p-timeline>
+
+            </div>
+
+            <!-- MEDICATIONS -->
+
+            <div class="bg-slate-50 p-4 rounded-lg">
+
+              <div class="font-semibold mb-3">
+                PRESCRIBED MEDICATIONS
+              </div>
+
+              <table class="w-full text-xs">
+
+                <thead class="text-slate-500">
+                  <tr>
+                    <th class="text-left">Med</th>
+                    <th class="text-left">Dose</th>
+                    <th class="text-left">Dr.</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+
+                  <tr *ngFor="let med of center.medications"
+                      class="border-t">
+
+                    <td>{{ med.name }}</td>
+                    <td>{{ med.dose }}</td>
+                    <td>{{ med.doctor }}</td>
+
+                  </tr>
+
+                </tbody>
+
+              </table>
+
+              <!-- DIAGNOSIS -->
+
+              <div class="mt-4">
+
+                <div class="font-semibold mb-1">
+                  DIAGNOSIS SUMMARY
+                </div>
+
+                <ul class="text-xs text-slate-600 list-disc pl-4">
+
+                  <li *ngFor="let d of center.diagnosis">
+                    {{ d }}
+                  </li>
+
+                </ul>
+
+              </div>
+
+            </div>
+
           </div>
 
-          <p-table
-            [value]="clinicalRecords"
-            styleClass="p-datatable-sm"
-            *ngIf="clinicalRecords.length > 0"
-          >
+        </p-accordionTab>
 
-            <ng-template pTemplate="header">
-              <tr class="text-xs">
-                <th>Date</th>
-                <th>Prescription</th>
-                <th>Note</th>
-                <th>Files</th>
-              </tr>
-            </ng-template>
-
-            <ng-template pTemplate="body" let-rec>
-              <tr class="text-xs">
-                <td>{{ rec.appointmentDate }}</td>
-                <td>{{ rec.prescription }}</td>
-                <td>{{ rec.note }}</td>
-                <td>{{ rec.attachments?.length || 0 }}</td>
-              </tr>
-            </ng-template>
-
-          </p-table>
-
-        </p-tabPanel>
-
-
-        <!-- BILLING -->
-        <p-tabPanel header="Billing">
-
-          <div class="text-xs text-gray-600">
-            Billing history will appear here.
-          </div>
-
-        </p-tabPanel>
-
-      </p-tabView>
+      </p-accordion>
 
     </div>
 
@@ -214,9 +190,7 @@
 
 </div>
 
-
 <!-- DIALOGS -->
-
 <app-appointment-dialog
   [(visible)]="appointmentDialogVisible"
   [patient]="patient"

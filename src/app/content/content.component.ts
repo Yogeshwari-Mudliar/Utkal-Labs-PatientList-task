@@ -15,11 +15,16 @@ import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MenuModule } from 'primeng/menu';
-import { MenuItem } from 'primeng/api';
+import { ConfirmationService, MenuItem } from 'primeng/api';
 import { PatientViewComponent } from '../patient-view/patient-view.component';
 import { TooltipModule } from 'primeng/tooltip';
 import { AppointmentDialogComponent } from '../patient-view/clinical/appointment-dialog/appointment-dialog.component';
 import { ClinicalRecordDialogComponent } from '../patient-view/clinical/clinical-record-dialog/clinical-record-dialog.component';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { filter } from 'rxjs';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { SidebarModule } from 'primeng/sidebar';
+
 // user.model.ts
 export interface User {
   id: number;
@@ -84,14 +89,18 @@ export interface Appointment {
     FormsModule, ButtonModule,
     TableModule, PaginatorModule,
     InputTextModule, AddPatientComponent
-    , AutoCompleteModule, MenuModule, PatientViewComponent, TooltipModule, ClinicalRecordDialogComponent,AppointmentDialogComponent],
+    , AutoCompleteModule, MenuModule, PatientViewComponent, TooltipModule, ConfirmDialogModule, ClinicalRecordDialogComponent, AppointmentDialogComponent, RouterOutlet,SidebarModule],
   templateUrl: './content.component.html',
   styleUrl: './content.component.css',
-   encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None,
+  providers: [ConfirmationService],
 })
 export class ContentComponent implements OnInit {
 
   @ViewChild('dt') dt!: Table;
+  @ViewChild(AddPatientComponent)
+  addPatientComponent!: AddPatientComponent;
+
   clinicalDialogVisible = false;
   userData: Patient[] = [];
   search: string = '';
@@ -105,8 +114,8 @@ export class ContentComponent implements OnInit {
   selectedDoctor: number | null = null;
   followUpRange: Date[] | null = null;
   followUpFrom!: Date;
-followUpTo!: Date;
-appointments: any[] = [];
+  followUpTo!: Date;
+  appointments: any[] = [];
   allDoctors: any[] = [];
   doctors: any[] = [];
 
@@ -119,8 +128,9 @@ appointments: any[] = [];
   isEditMode = false;
   draftKey = 'patient_form_draft';
   loadDraft = false;
+  sidePanelVisible = false;
 
-  constructor(private patientService: PatientService) { }
+  constructor(private patientService: PatientService, private router: Router, private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
 
@@ -165,14 +175,17 @@ appointments: any[] = [];
         command: () => this.onDelete(this.selectedPatient)
       }
     ];
-  }
-statusTabs = ['All', 'Waiting', 'In-Consultation', 'Discharge'];
-selectedStatus = 'All';
+    this.updateState();   // initial
 
-selectStatus(status: string) {
-  this.selectedStatus = status;
-  this.applyFilters();
-}
+    this.router.events
+      .pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe(() => this.updateState());
+  }
+  updateState() {
+    this.showAddPatient =
+      this.router.url.includes('/patients/new') ||
+      this.router.url.includes('/patients/edit');
+  }
   searchDoctors(event: any) {
 
     this.currentQuery = event.query?.toLowerCase() || '';
@@ -267,34 +280,36 @@ selectStatus(status: string) {
     this.pageSize = event.rows;
 
   }
+  // onAddUser() {
+
+  //   const draft = localStorage.getItem(this.draftKey);
+
+  //   if (draft) {
+
+  //     const decision = confirm(
+  //       "You have an unsaved patient draft.\n\n" +
+  //       "OK → Continue with draft\n" +
+  //       "Cancel → Discard draft"
+  //     );
+
+  //     if (decision) {
+  //       this.loadDraft = true;
+  //     } else {
+  //       localStorage.removeItem(this.draftKey);
+  //       this.loadDraft = false;
+  //     }
+
+  //   } else {
+  //     this.loadDraft = false;
+  //   }
+  // this.showAddPatient
+  //   this.router.navigate(['/patients/new']);
+  // }
   onAddUser() {
-
-    const draft = localStorage.getItem(this.draftKey);
-
-    if (draft) {
-
-      const decision = confirm(
-        "You have an unsaved patient draft.\n\n" +
-        "OK → Continue with draft\n" +
-        "Cancel → Discard draft"
-      );
-
-      if (decision) {
-        this.loadDraft = true;
-      } else {
-        localStorage.removeItem(this.draftKey);
-        this.loadDraft = false;
-      }
-    } else {
-      this.loadDraft = false;
-    }
-
-    this.selectedPatient = null;
-    this.isEditMode = false;
-    this.showAddPatient = true;
+    this.router.navigate(['/patients/new']);
   }
   handleClose(): void {
-    this.showAddPatient = false;
+    this.router.navigate(['/patients']);
     this.loadPatients();
   }
   applyGlobalFilter(event: Event): void {
@@ -315,31 +330,13 @@ selectStatus(status: string) {
   }
   handleOverlayClose(): void {
 
-    const draft = localStorage.getItem("patient_form_draft");
-
-    if (draft) {
-
-      const draftData = JSON.parse(draft);
-
-      const hasRealData = Object.keys(draftData).some(key => {
-
-        if (key === "registrationDate") return false;
-
-        return draftData[key];
-      });
-
-      if (hasRealData) {
-
-        if (confirm("You have unsaved patient data. Save before closing?")) {
-          return;
-        } else {
-          localStorage.removeItem("patient_form_draft");
-        }
-      }
-    }
-
-    this.showAddPatient = false;
+  if (this.addPatientComponent) {
+    this.addPatientComponent.cancel();   // delegate to child
+  } else {
+    this.handleClose();
   }
+
+}
 
   updateScrollHeight() {
     if (this.pageSize === 5) {
@@ -382,39 +379,39 @@ selectStatus(status: string) {
   }
   applyFilters() {
 
-  let filtered = [...this.allPatients];
+    let filtered = [...this.allPatients];
 
-  if (this.selectedDoctor) {
-    const selectedDoctorName = this.doctors.find(d => d.id === this.selectedDoctor)?.name;
-    filtered = filtered.filter(p => p.doctorName === selectedDoctorName);
+    if (this.selectedDoctor) {
+      const selectedDoctorName = this.doctors.find(d => d.id === this.selectedDoctor)?.name;
+      filtered = filtered.filter(p => p.doctorName === selectedDoctorName);
+    }
+
+    if (this.followUpRange && this.followUpRange.length === 2) {
+      const [start, end] = this.followUpRange;
+
+      filtered = filtered.filter(p => {
+        const followUp = new Date(p.nextFollowupDate);
+        return followUp >= start && followUp <= end;
+      });
+    }
+
+    if (this.search?.trim()) {
+      const keyword = this.search.toLowerCase();
+
+      filtered = filtered.filter(p =>
+        p.name?.toLowerCase().includes(keyword) ||
+        p.contactNumber?.includes(keyword)
+      );
+    }
+
+    if (!this.search?.trim()) {
+      this.currentFirst = 0;
+      this.pageSize = 5;
+    }
+
+    this.totalRecords = filtered.length;
+    this.userData = filtered;
   }
-
-  if (this.followUpRange && this.followUpRange.length === 2) {
-    const [start, end] = this.followUpRange;
-
-    filtered = filtered.filter(p => {
-      const followUp = new Date(p.nextFollowupDate);
-      return followUp >= start && followUp <= end;
-    });
-  }
-
-  if (this.search?.trim()) {
-    const keyword = this.search.toLowerCase();
-
-    filtered = filtered.filter(p =>
-      p.name?.toLowerCase().includes(keyword) ||
-      p.contactNumber?.includes(keyword)
-    );
-  }
-
-  if (!this.search?.trim()) {
-    this.currentFirst = 0;
-    this.pageSize= 5;
-  }
-
-  this.totalRecords = filtered.length;
-  this.userData = filtered;
-}
   getRowMenuItems(patient: any) {
     return [
       {
@@ -450,52 +447,10 @@ selectStatus(status: string) {
   }
   rowMenuItems: MenuItem[] = [];
 
-  openMenu(menu: any, patient: any, event: Event) {
-
-    this.rowMenuItems = [
-      // ===== Primary Actions =====
-      {
-        label: 'View Patient',
-        icon: 'pi pi-eye',
-        command: () => this.onView(patient)
-      },
-      {
-        label: 'Manage Appointment',
-        icon: 'pi pi-calendar-plus',
-        command: () => this.onAppointment(patient)
-      },
-      {
-        label: 'Prescription & Notes',
-        icon: 'pi pi-file-edit',
-        command: () => this.onClinical(patient)
-      },
-      {
-        label: 'Billing',
-        icon: 'pi pi-wallet',
-        command: () => this.onBilling(patient)
-      },
-
-      // ===== Management Actions =====
-      {
-        label: 'Edit',
-        icon: 'pi pi-pencil',
-        command: () => this.onEdit(patient)
-      },
-      {
-        label: 'Archive',
-        icon: 'pi pi-folder',
-        command: () => this.onArchive(patient)
-      },
-      {
-        label: 'Delete',
-        icon: 'pi pi-trash',
-        command: () => this.onDelete(patient),
-        styleClass: 'text-red-500' // optional visual warning
-      }
-    ];
-
-    menu.toggle(event);
-  }
+ openMenu(patient: any) {
+  this.selectedPatient = patient;
+  this.sidePanelVisible = true;
+}
   appointmentDialogVisible = false;
 
   onAppointment(patient: any) {
@@ -526,9 +481,9 @@ selectStatus(status: string) {
     console.log('Change Doctor', patient);
   }
   loadClinicalRecords() {
-  console.log('Reload clinical records...');
-  // Call your service here later
-}
+    console.log('Reload clinical records...');
+    // Call your service here later
+  }
 
   // UPLOAD REPORTS
   onUploadReports(patient: any) {
@@ -544,9 +499,17 @@ selectStatus(status: string) {
   onDelete(patient: any) {
     console.log('Delete', patient);
   }
-  onView(patient: any) {
-    this.viewPatient = patient;
-    this.showViewDialog = true;
-  }
+onView(patient: any) {
 
+  const encryptedId = this.encryptId(patient.id);
+
+  this.sidePanelVisible = false;
+
+  this.router.navigate(['/patientDetails', encryptedId]);
+
+}
+
+encryptId(id: string): string {
+  return btoa(id);   // encode
+}
 }

@@ -5,9 +5,10 @@ export interface Patient {
   email: string;
   emergencyContact: string;
   doctorName: string;
+  centerId: string;
   illness: string;
   description: string;
-  lastVisitDate: Date;
-  registrationDate: Date;
-  nextFollowupDate: Date;
+  lastVisitDate: Date |string;
+  registrationDate: Date |string;
+  nextFollowupDate: Date |string;
 }

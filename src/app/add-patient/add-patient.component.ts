@@ -45,25 +45,23 @@ export class AddPatientComponent implements OnInit {
 
   private draftKey = 'patient_form_draft';
 
-  doctors = [
-    { label: 'Dr. Smith', value: 'Dr. Smith' },
-    { label: 'Dr. Adams', value: 'Dr. Adams' },
-    { label: 'Dr. Johnson', value: 'Dr. Johnson' }
-  ];
+  doctors: any[] = [];
+  centers: any[] = [];
 
   constructor(
     private fb: FormBuilder,
     private patientService: PatientService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-
+    this.initializeCenters();
     this.patientForm = this.fb.group({
       name: ['', Validators.required],
       contactNumber: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       emergencyContact: ['', Validators.required],
       doctorName: ['', Validators.required],
+      centerId: ['', Validators.required],
       illness: ['', Validators.required],
       description: [''],
       lastVisitDate: ['', Validators.required],
@@ -90,8 +88,31 @@ export class AddPatientComponent implements OnInit {
         localStorage.setItem(this.draftKey, JSON.stringify(val));
       });
     }
-  }
+    const storedDoctors = JSON.parse(localStorage.getItem('doctors') || '[]');
 
+    this.doctors = storedDoctors.map((d: any) => ({
+      label: d.name,
+      value: d.name
+    }));
+    const storedCenters = JSON.parse(localStorage.getItem('centers') || '[]');
+
+    this.centers = storedCenters.map((c: any) => ({
+      label: c.name,
+      value: c.id
+    }));
+  }
+  initializeCenters() {
+    const centers = [
+      { id: 'C001', name: 'City Central Hospital' },
+      { id: 'C002', name: 'Westside Clinic' },
+      { id: 'C003', name: 'Eastside Specialist Center' },
+      { id: 'C004', name: 'Riverside Diagnostics' }
+    ];
+
+    if (!localStorage.getItem('centers')) {
+      localStorage.setItem('centers', JSON.stringify(centers));
+    }
+  }
   private getTodayDate(): string {
     const today = new Date();
     return today.toISOString().split('T')[0];
@@ -133,11 +154,33 @@ export class AddPatientComponent implements OnInit {
     this.close.emit();
   }
 
+  // cancel(): void {
+
+  //   if (!this.isEditMode && this.hasUserEnteredData()) {
+
+  //     if (confirm("Save draft before closing?")) {
+  //       localStorage.setItem(
+  //         this.draftKey,
+  //         JSON.stringify(this.patientForm.value)
+  //       );
+  //     } else {
+  //       localStorage.removeItem(this.draftKey);
+  //     }
+  //   }
+
+  //   this.close.emit();
+  // }
   cancel(): void {
 
     if (!this.isEditMode && this.hasUserEnteredData()) {
 
-      if (confirm("Save draft before closing?")) {
+      const decision = confirm(
+        "You have unsaved patient data.\n\n" +
+        "OK → Save as draft\n" +
+        "Cancel → Discard"
+      );
+
+      if (decision) {
         localStorage.setItem(
           this.draftKey,
           JSON.stringify(this.patientForm.value)
@@ -145,11 +188,11 @@ export class AddPatientComponent implements OnInit {
       } else {
         localStorage.removeItem(this.draftKey);
       }
+
     }
 
     this.close.emit();
   }
-
   private hasUserEnteredData(): boolean {
 
     const formValue = this.patientForm.value;
@@ -159,10 +202,30 @@ export class AddPatientComponent implements OnInit {
       if (key === 'registrationDate') return false;
 
       return formValue[key] !== null &&
-             formValue[key] !== '' &&
-             formValue[key] !== undefined;
+        formValue[key] !== '' &&
+        formValue[key] !== undefined;
     });
   }
 
+  canDeactivate(): boolean {
 
+    if (!this.isEditMode && this.patientForm.dirty) {
+
+      const confirmLeave = confirm(
+        "You have unsaved patient data. Leave this page?"
+      );
+
+      if (confirmLeave) {
+        localStorage.removeItem(this.draftKey);
+      }
+
+      return confirmLeave;
+    }
+
+    return true;
+  }
+  getCenterName(id: string) {
+    const center = this.centers.find(c => c.id === id);
+    return center ? center.name : 'Unknown Center';
+  }
 }

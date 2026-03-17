@@ -13,6 +13,7 @@ export interface Appointment {
   id: string;
   patientId: string;
   appointmentDate: string;
+  centerId: string;
   appointmentTime: string;
   durationMinutes: number;
   doctorName: string;
@@ -29,8 +30,8 @@ export interface Appointment {
     DialogModule,
     ButtonModule,
     CalendarModule,
-    FormsModule,DropdownModule,
-    TableModule,Tooltip,
+    FormsModule, DropdownModule,
+    TableModule, Tooltip,
     InputTextModule
   ],
   templateUrl: './appointment-dialog.component.html'
@@ -45,57 +46,78 @@ export class AppointmentDialogComponent implements OnChanges {
 
   editMode = false;
   editingId: string | null = null;
-
- form = {
-  date: null as Date | null,
-  time: null as Date | null,
-  duration: 30,
-  type: 'Follow-Up' as 'Initial' | 'Follow-Up', // ✅ ADD
-  reason: ''
-};
-statusOptions = [
-  { label: 'Scheduled', value: 'Scheduled' },
-  { label: 'Completed', value: 'Completed' },
-  { label: 'Cancelled', value: 'Cancelled' },
-  { label: 'No-Show', value: 'No-Show' }
-];
+  centers: any[] = [];
+  form = {
+    centerId: '',
+    date: null as Date | null,
+    time: null as Date | null,
+    duration: 30,
+    type: 'Follow-Up' as 'Initial' | 'Follow-Up', // ✅ ADD
+    reason: ''
+  };
+  statusOptions = [
+    { label: 'Scheduled', value: 'Scheduled' },
+    { label: 'Completed', value: 'Completed' },
+    { label: 'Cancelled', value: 'Cancelled' },
+    { label: 'No-Show', value: 'No-Show' }
+  ];
   ngOnChanges() {
     if (this.visible && this.patient) {
       this.loadAppointments();
     }
+    if (this.visible && this.patient) {
+
+      const storedCenters = JSON.parse(localStorage.getItem('centers') || '[]');
+
+      this.centers = storedCenters.map((c: any) => ({
+        label: c.name,
+        value: c.id
+      }));
+
+      this.form.centerId = this.patient.centerId;
+
+      this.loadAppointments();
+    }
+
   }
-loadAppointments() {
+  loadAppointments() {
 
-  let all = JSON.parse(localStorage.getItem('appointments') || '[]');
+    let all = JSON.parse(localStorage.getItem('appointments') || '[]');
 
-  // If no appointments exist for this patient,
-  // generate from mock patient fields
-  const patientAppointments = all.filter(
-    (a: Appointment) => a.patientId === this.patient.id
-  );
+    // If no appointments exist for this patient,
+    // generate from mock patient fields
+    const patientAppointments = all.filter(
+      (a: Appointment) => a.patientId === this.patient.id
+    );
 
-  if (patientAppointments.length === 0 && this.patient.lastVisitDate) {
+    if (patientAppointments.length === 0 && this.patient.lastVisitDate) {
 
-   const initialAppointment: Appointment = {
-  id: 'APT-' + Date.now(),
-  patientId: this.patient.id,
-  appointmentDate: this.patient.lastVisitDate,
-  appointmentTime: '10:00',
-  durationMinutes: 30,
-  doctorName: this.patient.doctorName,
-  status: 'Completed',
-  type: 'Initial',   // ✅ ADD THIS
-  reason: 'Initial Visit',
-  createdAt: new Date().toISOString()
-};
-    all.push(initialAppointment);
-    localStorage.setItem('appointments', JSON.stringify(all));
+      const initialAppointment: Appointment = {
+        id: 'APT-' + Date.now(),
+        patientId: this.patient.id,
+        centerId: this.patient.centerId,
+        // appointmentDate: this.patient.lastVisitDate,
+        appointmentDate: String(this.patient.lastVisitDate),  // ✅ FIX DATE STRING ISSUE
+        appointmentTime: '10:00',
+        durationMinutes: 30,
+        doctorName: this.patient.doctorName,
+        status: 'Completed',
+        type: 'Initial',   // ✅ ADD THIS
+        reason: 'Initial Visit',
+        createdAt: new Date().toISOString()
+      };
+      all.push(initialAppointment);
+      localStorage.setItem('appointments', JSON.stringify(all));
+    }
+
+    this.appointments = all
+      .filter((a: Appointment) => a.patientId === this.patient.id)
+      .sort(
+        (a: Appointment, b: Appointment) =>
+          new Date(b.appointmentDate).getTime() -
+          new Date(a.appointmentDate).getTime()
+      );
   }
-
-  this.appointments = all.filter(
-    (a: Appointment) => a.patientId === this.patient.id
-  );
-}
 
   save() {
 
@@ -106,9 +128,9 @@ loadAppointments() {
     if (this.editMode && this.editingId) {
 
       const index = all.findIndex((a: Appointment) => a.id === this.editingId);
+      if (index === -1) return;
 
-      if (all[index].status === 'Completed') return; // restriction
-
+      if (all[index].status === 'Completed') return;
       all[index] = {
         ...all[index],
         appointmentDate: this.formatDate(this.form.date),
@@ -118,18 +140,19 @@ loadAppointments() {
 
     } else {
 
-    const newAppointment: Appointment = {
-  id: 'APT-' + Date.now(),
-  patientId: this.patient.id,
-  appointmentDate: this.formatDate(this.form.date),
-  appointmentTime: this.formatTime(this.form.time),
-  durationMinutes: this.form.duration,
-  doctorName: this.patient.doctorName,
-  status: 'Scheduled',
-  type: this.form.type,   // ✅ ADD
-  reason: this.form.reason,
-  createdAt: new Date().toISOString()
-};
+      const newAppointment: Appointment = {
+        id: 'APT-' + Date.now(),
+        patientId: this.patient.id,
+        centerId: this.patient.centerId,
+        appointmentDate: this.formatDate(this.form.date),
+        appointmentTime: this.formatTime(this.form.time),
+        durationMinutes: this.form.duration,
+        doctorName: this.patient.doctorName,
+        status: 'Scheduled',
+        type: this.form.type,   // ✅ ADD
+        reason: this.form.reason,
+        createdAt: new Date().toISOString()
+      };
 
       all.push(newAppointment);
     }
@@ -150,16 +173,17 @@ loadAppointments() {
   }
 
   resetForm() {
-  this.editMode = false;
-  this.editingId = null;
-  this.form = {
-    date: null,
-    time: null,
-    duration: 30,
-    type: 'Follow-Up',   // ✅ ADD
-    reason: ''
-  };
-}
+    this.editMode = false;
+    this.editingId = null;
+    this.form = {
+      date: null,
+      centerId: '',
+      time: null,
+      duration: 30,
+      type: 'Follow-Up',   // ✅ ADD
+      reason: ''
+    };
+  }
 
   formatDate(date: Date) {
     return date.toISOString().split('T')[0];
@@ -172,18 +196,18 @@ loadAppointments() {
   close() {
     this.visibleChange.emit(false);
   }
-updateStatus(appt: Appointment) {
+  updateStatus(appt: Appointment) {
 
-  const all = JSON.parse(localStorage.getItem('appointments') || '[]');
+    const all = JSON.parse(localStorage.getItem('appointments') || '[]');
 
-  const index = all.findIndex((a: Appointment) => a.id === appt.id);
+    const index = all.findIndex((a: Appointment) => a.id === appt.id);
 
-  if (index !== -1) {
-    all[index].status = appt.status;
-    localStorage.setItem('appointments', JSON.stringify(all));
+    if (index !== -1) {
+      all[index].status = appt.status;
+      localStorage.setItem('appointments', JSON.stringify(all));
+    }
+
+    this.loadAppointments();
   }
-
-  this.loadAppointments();
-}
 
 }

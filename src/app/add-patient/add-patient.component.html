@@ -3,31 +3,21 @@
   <!-- FORM BODY (scrollable) -->
   <div class="overflow-y-auto p-6">
 
-    <form
-      [formGroup]="patientForm"
-      (ngSubmit)="submit()"
-      class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 text-sm"
-    >
+    <form [formGroup]="patientForm" (ngSubmit)="submit()"
+      class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 text-sm">
 
       <!-- Patient Name -->
       <div class="flex flex-col gap-1">
         <label class="font-medium text-gray-700">Patient Name *</label>
 
-        <input
-          pInputText
-          formControlName="name"
-          [ngClass]="{
+        <input pInputText formControlName="name" [ngClass]="{
             'border-red-500 ring-1 ring-red-300':
             patientForm.get('name')?.invalid && patientForm.get('name')?.touched
-          }"
-          class="w-full border border-gray-300 rounded-md px-3 h-9
-          focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition"
-        />
+          }" class="w-full border border-gray-300 rounded-md px-3 h-9
+          focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" />
 
-        <small
-          *ngIf="patientForm.get('name')?.invalid && patientForm.get('name')?.touched"
-          class="text-red-500 text-xs"
-        >
+        <small *ngIf="patientForm.get('name')?.invalid && patientForm.get('name')?.touched"
+          class="text-red-500 text-xs">
           Patient name is required
         </small>
       </div>
@@ -36,109 +26,79 @@
       <div class="flex flex-col gap-1">
         <label class="font-medium text-gray-700">Contact Number *</label>
 
-        <input
-          pInputText
-          formControlName="contactNumber"
-          class="w-full border border-gray-300 rounded-md px-3 h-9
-          focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition"
-        />
+        <input pInputText formControlName="contactNumber" class="w-full border border-gray-300 rounded-md px-3 h-9
+          focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" />
       </div>
 
       <!-- Email -->
       <div class="flex flex-col gap-1">
         <label class="font-medium text-gray-700">Email *</label>
 
-        <input
-          pInputText
-          formControlName="email"
-          class="w-full border border-gray-300 rounded-md px-3 h-9
-          focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition"
-        />
+        <input pInputText formControlName="email" class="w-full border border-gray-300 rounded-md px-3 h-9
+          focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" />
       </div>
+      <!-- Center -->
+      <div class="flex flex-col gap-1">
+        <label class="font-medium text-gray-700">Center *</label>
 
+        <p-dropdown [options]="centers" formControlName="centerId" placeholder="Select Center" styleClass="w-full">
+        </p-dropdown>
+      </div>
       <!-- Emergency Contact -->
       <div class="flex flex-col gap-1">
         <label class="font-medium text-gray-700">Emergency Contact *</label>
 
-        <input
-          pInputText
-          formControlName="emergencyContact"
-          class="w-full border border-gray-300 rounded-md px-3 h-9
-          focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition"
-        />
+        <input pInputText formControlName="emergencyContact" class="w-full border border-gray-300 rounded-md px-3 h-9
+          focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" />
       </div>
 
       <!-- Doctor -->
       <div class="flex flex-col gap-1">
         <label class="font-medium text-gray-700">Doctor *</label>
 
-        <p-dropdown
-          [options]="doctors"
-          formControlName="doctorName"
-          placeholder="Select Doctor"
-          styleClass="w-full"
-        ></p-dropdown>
+        <p-dropdown [options]="doctors" formControlName="doctorName" placeholder="Select Doctor"
+          styleClass="w-full"></p-dropdown>
       </div>
 
       <!-- Illness -->
       <div class="flex flex-col gap-1">
         <label class="font-medium text-gray-700">Illness *</label>
 
-        <input
-          pInputText
-          formControlName="illness"
-          class="w-full border border-gray-300 rounded-md px-3 h-9
-          focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition"
-        />
+        <input pInputText formControlName="illness" class="w-full border border-gray-300 rounded-md px-3 h-9
+          focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" />
       </div>
 
       <!-- Last Visit -->
       <div class="flex flex-col gap-1">
         <label class="font-medium text-gray-700">Last Visit *</label>
 
-        <input
-          type="date"
-          formControlName="lastVisitDate"
-          class="w-full border border-gray-300 rounded-md px-3 h-9
-          focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition"
-        />
+        <input type="date" formControlName="lastVisitDate" class="w-full border border-gray-300 rounded-md px-3 h-9
+          focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" />
       </div>
 
       <!-- Registration -->
       <div class="flex flex-col gap-1">
         <label class="font-medium text-gray-700">Registration Date *</label>
 
-        <input
-          type="date"
-          formControlName="registrationDate"
-          class="w-full border border-gray-300 rounded-md px-3 h-9
-          focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition"
-        />
+        <input type="date" formControlName="registrationDate" class="w-full border border-gray-300 rounded-md px-3 h-9
+          focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" />
       </div>
 
       <!-- Next Followup -->
       <div class="flex flex-col gap-1 md:col-span-2">
         <label class="font-medium text-gray-700">Next Follow-up *</label>
 
-        <input
-          type="date"
-          formControlName="nextFollowupDate"
-          class="w-full border border-gray-300 rounded-md px-3 h-9
-          focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition"
-        />
+        <input type="date" formControlName="nextFollowupDate" class="w-full border border-gray-300 rounded-md px-3 h-9
+          focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" />
       </div>
 
       <!-- Description -->
       <div class="flex flex-col gap-1 md:col-span-2">
         <label class="font-medium text-gray-700">Description</label>
 
-        <textarea
-          formControlName="description"
-          rows="2"
-          class="w-full border border-gray-300 rounded-md px-3 py-2
+        <textarea formControlName="description" rows="2" class="w-full border border-gray-300 rounded-md px-3 py-2
           focus:border-blue-500 focus:ring-2 focus:ring-blue-100
-          transition resize-none"
-        ></textarea>
+          transition resize-none"></textarea>
       </div>
 
     </form>
@@ -146,29 +106,19 @@
   </div>
 
 
-<!-- FIXED FOOTER -->
-<div class="flex justify-end gap-3 px-6 py-3 border-t bg-gray-50">
+  <!-- FIXED FOOTER -->
+  <div class="flex justify-end gap-3 px-6 py-3 border-t bg-gray-50">
 
-  <button
-    type="button"
-    (click)="cancel()"
-    class="px-4 h-9 rounded-md border border-gray-300
-    text-gray-700 hover:bg-gray-100 transition text-sm"
-  >
-    Cancel
-  </button>
+    <button type="button" (click)="cancel()" class="px-4 h-9 rounded-md border border-gray-300
+    text-gray-700 hover:bg-gray-100 transition text-sm">
+      Cancel
+    </button>
 
-<button
-  pButton
-  type="button"
-  (click)="submit()"
-  [label]="isEditMode ? 'Update Patient' : 'Add Patient'"
-  icon="pi pi-check"
-  class="p-button-outlined h-9 px-4 text-sm
+    <button pButton type="button" (click)="submit()" [label]="isEditMode ? 'Update Patient' : 'Add Patient'"
+      icon="pi pi-check" class="p-button-outlined h-9 px-4 text-sm
          !border-blue-600 !text-blue-600
-         !hover:!bg-blue-50 !text-white-600"
-></button>
+         !hover:!bg-blue-50 !text-white-600"></button>
 
-</div>
+  </div>
 
 </div>

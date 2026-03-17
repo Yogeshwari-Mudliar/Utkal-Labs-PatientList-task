@@ -40,8 +40,13 @@ updatePatient(updatedPatient: Patient): void {
   this.savePatients(patients);
 }
   generatePatientId(): string {
-    return 'PAT-' + Date.now();
-  }
+
+  const patients = this.getPatients();
+
+  const next = patients.length + 10001;
+
+  return 'PAT-' + next;
+}
 
   clearAll(): void {
     localStorage.removeItem(this.STORAGE_KEY);

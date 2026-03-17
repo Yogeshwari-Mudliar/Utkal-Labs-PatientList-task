@@ -3,107 +3,214 @@
   [(visible)]="visible"
   [modal]="true"
   [style]="{ width: '900px' }"
-  [contentStyle]="{ 'max-height': '75vh', 'overflow': 'auto' }"
+  [contentStyle]="{ padding: '0', overflow: 'hidden' }"
   (onHide)="close()">
 
-  <!-- Scheduling Form -->
-  <div class="border rounded p-3 mb-4">
-    <h4 class="font-semibold mb-3">
-      {{ editMode ? 'Reschedule Appointment' : 'Schedule New Appointment' }}
+<div class="bg-white rounded-xl shadow-sm flex flex-col max-h-[75vh]">
+
+  <!-- BODY -->
+  <div class="overflow-y-auto p-6">
+
+    <!-- Scheduling Form -->
+    <div class="border rounded-lg p-4 mb-5 bg-gray-50">
+
+      <h4 class="font-semibold mb-4 text-gray-700">
+        {{ editMode ? 'Reschedule Appointment' : 'Schedule New Appointment' }}
+      </h4>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 text-sm">
+
+        <!-- Center -->
+        <div class="flex flex-col gap-1">
+          <label class="font-medium text-gray-700">Center</label>
+
+          <p-dropdown
+            [options]="centers"
+            [(ngModel)]="form.centerId"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Select Center"
+            styleClass="w-full">
+          </p-dropdown>
+        </div>
+
+        <!-- Date -->
+        <div class="flex flex-col gap-1">
+          <label class="font-medium text-gray-700">Date</label>
+
+          <p-calendar
+            [(ngModel)]="form.date"
+            showIcon="true"
+            appendTo="body"
+            dateFormat="dd/mm/yy"
+            styleClass="w-full">
+          </p-calendar>
+        </div>
+
+        <!-- Time -->
+        <div class="flex flex-col gap-1">
+          <label class="font-medium text-gray-700">Time</label>
+
+          <p-calendar
+            [(ngModel)]="form.time"
+            timeOnly="true"
+            hourFormat="24"
+            appendTo="body"
+            styleClass="w-full">
+          </p-calendar>
+        </div>
+
+        <!-- Duration -->
+        <div class="flex flex-col gap-1">
+          <label class="font-medium text-gray-700">Duration (mins)</label>
+
+          <input
+            pInputText
+            type="number"
+            [(ngModel)]="form.duration"
+            class="w-full border border-gray-300 rounded-md px-3 h-9
+            focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition">
+        </div>
+
+        <!-- Reason -->
+        <div class="flex flex-col gap-1 md:col-span-2">
+          <label class="font-medium text-gray-700">Reason</label>
+
+          <input
+            pInputText
+            [(ngModel)]="form.reason"
+            class="w-full border border-gray-300 rounded-md px-3 h-9
+            focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition">
+        </div>
+
+      </div>
+
+      <div class="flex justify-end gap-2 mt-4">
+        <button
+          pButton
+          label="Cancel"
+          class="p-button-text"
+          (click)="resetForm()">
+        </button>
+
+        <button
+          pButton
+          label="Save"
+          icon="pi pi-check"
+          (click)="save()">
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Appointment History -->
+    <h4 class="font-semibold mb-3 text-gray-700">
+      Appointment History
     </h4>
 
-    <div class="grid grid-cols-2 gap-3">
+    <p-table [value]="appointments" class="text-sm">
 
-      <div>
-        <label>Date</label>
-        <p-calendar
-          [(ngModel)]="form.date"
-          showIcon="true"
-          appendTo="body"
-          dateFormat="dd/mm/yy">
-        </p-calendar>
-      </div>
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Status</th>
+          <th>Reason</th>
+          <th style="width:90px">Action</th>
+        </tr>
+      </ng-template>
 
-      <div>
-        <label>Time</label>
-        <p-calendar
-          [(ngModel)]="form.time"
-          timeOnly="true"
-          hourFormat="24"
-          appendTo="body">
-        </p-calendar>
-      </div>
+      <ng-template pTemplate="body" let-appt>
+        <tr>
 
-      <div>
-        <label>Duration (mins)</label>
-        <input pInputText type="number" [(ngModel)]="form.duration">
-      </div>
+          <td>{{ appt.appointmentDate }}</td>
 
-      <div>
-        <label>Reason</label>
-        <input pInputText [(ngModel)]="form.reason">
-      </div>
+          <td>{{ appt.appointmentTime }}</td>
 
-    </div>
+          <!-- STATUS COLUMN -->
+          <td>
 
-    <div class="flex justify-end gap-2 mt-3">
-      <button pButton label="Cancel" class="p-button-text" (click)="resetForm()"></button>
-      <button pButton label="Save" (click)="save()"></button>
-    </div>
+            <ng-container *ngIf="appt.status !== 'Completed'; else completedView">
+
+              <p-dropdown
+                [options]="statusOptions"
+                [(ngModel)]="appt.status"
+                (onChange)="updateStatus(appt)"
+                optionLabel="label"
+                optionValue="value"
+                appendTo="body"
+                styleClass="w-full">
+
+                <!-- Selected badge -->
+                <ng-template pTemplate="selectedItem" let-selected>
+                  <span
+                    class="px-2 py-1 rounded text-xs font-semibold"
+                    [ngClass]="{
+                      'bg-yellow-100 text-yellow-700': selected?.value === 'Scheduled',
+                      'bg-green-100 text-green-700': selected?.value === 'Completed'
+                    }">
+
+                    {{ selected?.label }}
+
+                  </span>
+                </ng-template>
+
+                <!-- Dropdown options -->
+                <ng-template pTemplate="item" let-option>
+                  <span
+                    class="px-2 py-1 rounded text-xs font-semibold"
+                    [ngClass]="{
+                      'bg-yellow-100 text-yellow-700': option.value === 'Scheduled',
+                      'bg-green-100 text-green-700': option.value === 'Completed'
+                    }">
+
+                    {{ option.label }}
+
+                  </span>
+                </ng-template>
+
+              </p-dropdown>
+
+            </ng-container>
+
+            <!-- Completed badge -->
+            <ng-template #completedView>
+
+              <span
+                class="px-2 py-1 rounded text-xs font-semibold
+                bg-green-100 text-green-700">
+
+                Completed
+
+              </span>
+
+            </ng-template>
+
+          </td>
+
+          <td>{{ appt.reason }}</td>
+
+          <td>
+
+            <button
+              *ngIf="appt.status === 'Scheduled'"
+              pButton
+              icon="pi pi-refresh"
+              class="p-button-text p-button-sm"
+              pTooltip="Reschedule Appointment"
+              tooltipPosition="top"
+              (click)="startReschedule(appt)">
+            </button>
+
+          </td>
+
+        </tr>
+      </ng-template>
+
+    </p-table>
+
   </div>
 
-  <!-- History -->
-  <h4 class="font-semibold mb-2">Appointment History</h4>
-
-  <p-table [value]="appointments">
-
-    <ng-template pTemplate="header">
-      <tr>
-        <th>Date</th>
-        <th>Time</th>
-        <th>Status</th>
-        <th>Reason</th>
-        <th>Action</th>
-      </tr>
-    </ng-template>
-
-    <ng-template pTemplate="body" let-appt>
-      <tr>
-        <td>{{ appt.appointmentDate }}</td>
-        <td>{{ appt.appointmentTime }}</td>
-        <td>
-  <ng-container *ngIf="appt.status !== 'Completed'; else completedView">
-    <p-dropdown
-      [options]="statusOptions"
-      [(ngModel)]="appt.status"
-      (onChange)="updateStatus(appt)"
-      optionLabel="label"
-      optionValue="value"
-      appendTo="body">
-    </p-dropdown>
-  </ng-container>
-
-  <ng-template #completedView>
-    <span class="text-green-600 font-semibold">
-      Completed
-    </span>
-  </ng-template>
-</td>
-        <td>{{ appt.reason }}</td>
-        <td>
-         <button
-  *ngIf="appt.status === 'Scheduled'"
-  pButton
-  icon="pi pi-refresh"
-  class="p-button-text p-button-sm"
-  pTooltip="Reschedule Appointment"
-  tooltipPosition="top"
-  (click)="startReschedule(appt)">
-</button>
-        </td>
-      </tr>
-    </ng-template>
-
-  </p-table>
+</div>
 
 </p-dialog>

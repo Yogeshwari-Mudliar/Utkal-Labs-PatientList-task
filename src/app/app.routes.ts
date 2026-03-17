@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { ContentComponent } from './content/content.component';
+import { pendingChangesGuard } from './pending-changes.guard';
 
 export const routes: Routes = [
   {
@@ -12,16 +13,31 @@ export const routes: Routes = [
     path: 'patients',
     loadComponent: () =>
       import('./content/content.component')
-      .then(m => m.ContentComponent)
-  },
+        .then(m => m.ContentComponent),
+    children: [
+      {
+        path: 'new',
+        loadComponent: () =>
+          import('./add-patient/add-patient.component')
+            .then(m => m.AddPatientComponent),
+        canDeactivate: [pendingChangesGuard]
+      },
+      {
+        path: 'edit/:id',
+        loadComponent: () =>
+          import('./add-patient/add-patient.component')
+            .then(m => m.AddPatientComponent),
+        canDeactivate: [pendingChangesGuard]
+      }
 
-  {
-    path: 'addPatient',
-    loadComponent: () =>
-      import('./add-patient/add-patient.component')
-      .then(m => m.AddPatientComponent)
-  },
-
+    ],
+    
+  }, {
+        path: 'patientDetails/:id',
+        loadComponent: () =>
+          import('./patient-view/patient-view.component')
+            .then(m => m.PatientViewComponent)
+      },
   // {
   //   path: 'billing',
   //   loadChildren: () =>
