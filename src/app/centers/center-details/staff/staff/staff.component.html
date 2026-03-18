@@ -4,7 +4,7 @@
 
   <button (click)="addStaff()">Add Staff</button>
 
-  <div *ngFor="let s of staffList"> <!-- ❌ wrong variable -->
+  <div *ngFor="let s of staffList"> 
     {{ s.name }} - {{ s.role }}
   </div>
 
