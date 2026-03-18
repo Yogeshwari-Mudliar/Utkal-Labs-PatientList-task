@@ -38,6 +38,63 @@ export const routes: Routes = [
           import('./patient-view/patient-view.component')
             .then(m => m.PatientViewComponent)
       },
+      {
+  path: 'centers',
+  children: [
+
+    // Centers List Page
+    {
+      path: '',
+      loadComponent: () =>
+        import('./centers/centers/centers.component')
+          .then(m => m.CentersComponent)
+    },
+
+    // Center Details (MAIN HUB)
+    {
+      path: ':id',
+      loadComponent: () =>
+        import('./centers/center-details/center-details/center-details.component')
+          .then(m => m.CenterDetailsComponent),
+
+      children: [
+
+        // Default redirect inside center
+        {
+          path: '',
+          redirectTo: 'departments',
+          pathMatch: 'full'
+        },
+
+        // Departments
+        {
+          path: 'departments',
+          loadComponent: () =>
+            import('./centers/center-details/departments/departments/departments.component')
+              .then(m => m.DepartmentsComponent)
+        },
+
+        // Positions
+        {
+          path: 'positions',
+          loadComponent: () =>
+            import('./centers/center-details/positions/positions/positions.component')
+              .then(m => m.PositionsComponent)
+        },
+
+        // Staff
+        {
+          path: 'staff',
+          loadComponent: () =>
+            import('./centers/center-details/staff/staff/staff.component')
+              .then(m => m.StaffComponent)
+        }
+
+      ]
+    }
+
+  ]
+}
   // {
   //   path: 'billing',
   //   loadChildren: () =>

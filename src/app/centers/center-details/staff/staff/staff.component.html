@@ -1,0 +1,11 @@
+<div>
+
+  <h3>Staff</h3>
+
+  <button (click)="addStaff()">Add Staff</button>
+
+  <div *ngFor="let s of staffList"> <!-- ❌ wrong variable -->
+    {{ s.name }} - {{ s.role }}
+  </div>
+
+</div>

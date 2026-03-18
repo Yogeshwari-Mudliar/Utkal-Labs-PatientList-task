@@ -1,0 +1,13 @@
+<div>
+
+  <h3>Departments</h3>
+
+  <button (click)="addDepartment()">Add</button>
+
+  <ul>
+    <li *ngFor="let dept of departments">
+      {{ dept.title }} <!-- ❌ wrong property -->
+    </li>
+  </ul>
+
+</div>
