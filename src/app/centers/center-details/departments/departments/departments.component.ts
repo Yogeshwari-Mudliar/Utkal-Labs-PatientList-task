@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
   styleUrl: './departments.component.css'
 })
 export class DepartmentsComponent {
-
+password= "123456"
   departments: any| null = null; // ❌ should be array
 
   ngOnInit() { // ❌ no interface implementation
