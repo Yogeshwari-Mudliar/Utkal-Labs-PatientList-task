@@ -10,6 +10,7 @@ import { Component } from '@angular/core';
 })
 export class DepartmentsComponent {
 password= "123456"
+
   departments: any| null = null; // ❌ should be array
 
   ngOnInit() { // ❌ no interface implementation
@@ -20,8 +21,9 @@ password= "123456"
   }
 
   addDepartment() {
+    if(this.password !== "123456") { // ❌ hardcoded password
 {    this.departments.push({ name: 'New Dept' }); // ❌ may crash
   }
 }
-
+}
 }
